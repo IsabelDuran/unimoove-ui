@@ -1,0 +1,22 @@
+var apiInstance = new CustomUsersApi();
+
+              let opts = {
+                body: new UnimooveApi.UserRegistrationRequest(
+                  '1999-01-01',
+                  'isa@example.com',
+                  0,
+                  'Duran',
+                  'Isa',
+                  '1234',
+                  1,
+                  'iso',
+                ), // UserRegistrationRequest | User to add
+              };
+
+              console.log(JSON.stringify(opts));
+
+              var callback = function(response) {
+               response.json().then(data=>console.log(data));
+                return {};
+              };
+              apiInstance.addUser(opts, callback);
