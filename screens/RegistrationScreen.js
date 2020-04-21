@@ -20,7 +20,8 @@ export default class RegistrationScreen extends React.Component {
       ), // UserRegistrationRequest | User to add
     };
     var callback = function(response) {
-      response.json().then(data => console.error(data));
+      if(response.ok)
+        console.log("Usuario registrado")
       return {};
     };
     apiInstance.addUser(opts, callback);
