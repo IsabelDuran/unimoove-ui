@@ -41,6 +41,9 @@ export default class WelcomeScreen extends React.Component {
             style={styles.button}
             mode="contained"
             dark={true}
+            onPress={() => {
+              this.props.navigation.navigate('LoginScreen');
+            }}
             color="#69e000">
             Iniciar Sesión
           </Button>

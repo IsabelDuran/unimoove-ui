@@ -1,8 +1,13 @@
 import React from 'react';
-import {Text} from 'react-native';
+import LoginForm from '../Components/LoginForm';
+import {CustomUsersApi} from '../CustomApiClient';
+var UnimooveApi = require('unimoove_api');
 
 export default class LoginScreen extends React.Component {
+  loginUser(body){
+
+  }
   render() {
-    return <Text>Login screen</Text>;
+    return <LoginForm handlePress={this.loginUser}/>;
   }
 }

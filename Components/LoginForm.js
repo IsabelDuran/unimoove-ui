@@ -1,52 +1,27 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {TextInput, Button} from 'react-native-paper';
 import Header from '../Components/Header';
-import DateInput from './DateInput';
 
-export default class RegistrationForm extends React.Component {
+export default class LoginForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      birthdate: '',
-      email: '',
-      role: 0,
-      Apellidos: '',
-      name: '',
       password: '',
-      gender: 0,
       username: '',
     };
   }
 
-  setBirthdate = sentBirthdate => {
-    this.setState(({birthdate: sentBirthdate}));
-  };
-
   render() {
     return (
       <View style={styles.regform} behavior="padding">
-        <Header>Registro</Header>
+        <Header>¡Hola de nuevo!</Header>
         <View style={styles.container}>
           {[
-            {label: 'Nombre', fieldName: 'name'},
-            {label: 'Apellidos', fieldName: 'lastname'},
             {label: 'Nombre de usuario', fieldName: 'username'},
-            {label: 'Email', fieldName: 'email', autoCompleteType: 'email'},
             {
               label: 'Contraseña',
               fieldName: 'password',
-              isPassword: true,
-              isSecureTextEntry: true,
-            },
-            {
-              label: 'Repetir contraseña',
-              fieldName: 'passwordRepeat',
               isPassword: true,
               isSecureTextEntry: true,
             },
@@ -65,11 +40,6 @@ export default class RegistrationForm extends React.Component {
             />
           ))}
 
-          <DateInput
-            label="Fecha nacimiento"
-            onChange={this.setBirthdate}
-          />
-
           <Button
             style={styles.button}
             mode="contained"
@@ -78,14 +48,14 @@ export default class RegistrationForm extends React.Component {
             onPress={() => {
               this.props.handlePress(this.state);
             }}>
-            Aceptar
+            Iniciar Sesión
           </Button>
         </View>
 
         <View style={styles.row}>
-          <Text style={styles.label}>¿Ya tienes una cuenta? </Text>
+          <Text style={styles.label}>¿Aún no tienes una cuenta? </Text>
           <TouchableOpacity onPress={() => navigation.navigate('LoginScreen')}>
-            <Text style={styles.link}>Iniciar Sesión</Text>
+            <Text style={styles.link}>Registrate</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -120,6 +90,6 @@ const styles = StyleSheet.create({
   },
   link: {
     fontWeight: 'bold',
-    color: '#15abe7',
+    color: '#69e000',
   },
 });
