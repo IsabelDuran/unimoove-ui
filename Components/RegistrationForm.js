@@ -1,7 +1,15 @@
 import React from 'react';
-import {StyleSheet ,Text, View} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  KeyboardAvoidingView,
+  TouchableOpacity,
+} from 'react-native';
 import {TextInput, Button} from 'react-native-paper';
+import Header from '../Components/Header';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import DateInput from './DateInput';
 
 export default class RegistrationForm extends React.Component {
   constructor(props) {
@@ -17,22 +25,19 @@ export default class RegistrationForm extends React.Component {
       username: '',
     };
   }
+
+  setBirthdate = sentBirthdate => {
+    this.setState(({birthdate: sentBirthdate}));
+  };
+
   render() {
     return (
-      <View style={{flex:1}}>
-        <Text style={styles.header}>Registro</Text>
-        <View
-          style={{
-            flex: 8,
-            marginTop: 20,
-            marginBottom: 20,
-            marginRight: 20,
-            marginLeft: 20,
-          }}>
+      <KeyboardAvoidingView style={styles.regform} behavior="padding">
+        <Header>Registro</Header>
+        <View style={styles.container}>
           {[
             {label: 'Nombre', fieldName: 'name'},
             {label: 'Apellidos', fieldName: 'lastname'},
-            {label: 'Fecha nacimiento', fieldName: 'birthdate'},
             {label: 'Nombre de usuario', fieldName: 'username'},
             {label: 'Email', fieldName: 'email'},
             {
@@ -41,9 +46,16 @@ export default class RegistrationForm extends React.Component {
               isPassword: true,
               isSecureTextEntry: true,
             },
+            {
+              label: 'Repetir contraseña',
+              fieldName: 'passwordRepeat',
+              isPassword: true,
+              isSecureTextEntry: true,
+            },
           ].map(x => (
             <TextInput
-              mode="flat"
+              mode="outlined"
+              underlineColor="transparent"
               key={x.label}
               label={x.label}
               secureTextEntry={x.isSecureTextEntry}
@@ -52,32 +64,14 @@ export default class RegistrationForm extends React.Component {
               onChangeText={value => this.setState({[x.fieldName]: value})}
             />
           ))}
+
+          <DateInput
+            label="Fecha nacimiento"
+            onChange={this.setBirthdate}
+          />
+
           <Button
-            mode="outlined"
-            color="#15abe7"
-            onPress={() => {
-              showDatepicker;
-            }}>
-            Fecha de nacimiento
-          </Button>
-        </View>
-        <View
-          style={{
-            flex: 1,
-            flexWrap: 'wrap',
-            flexDirection: 'row',
-            justifyContent: 'space-evenly',
-          }}>
-          <Button
-            mode="contained"
-            dark={true}
-            color="#15abe7"
-            onPress={() => {
-              this.props.handlePress(this.state);
-            }}>
-            Cancelar
-          </Button>
-          <Button
+            style={styles.button}
             mode="contained"
             dark={true}
             color="#69e000"
@@ -87,16 +81,45 @@ export default class RegistrationForm extends React.Component {
             Aceptar
           </Button>
         </View>
-      </View>
+
+        <View style={styles.row}>
+          <Text style={styles.label}>¿Ya tienes una cuenta? </Text>
+          <TouchableOpacity onPress={() => navigation.navigate('LoginScreen')}>
+            <Text style={styles.link}>Iniciar Sesión</Text>
+          </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
     );
   }
 }
 
 const styles = StyleSheet.create({
-    regform: {
-      alignSelf: 'stretch',
-    },
-    header: {
-      fontSize: 24,
-    }
+  regform: {
+    flex: 1,
+    padding: 20,
+    width: '100%',
+    maxWidth: 340,
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#F3F3F3',
+  },
+  container: {
+    width: '100%',
+    marginVertical: 12,
+  },
+  button: {
+    marginTop: 24,
+  },
+  label: {
+    color: '#525252',
+  },
+  row: {
+    flexDirection: 'row',
+    marginTop: 4,
+  },
+  link: {
+    fontWeight: 'bold',
+    color: '#15abe7',
+  },
 });
