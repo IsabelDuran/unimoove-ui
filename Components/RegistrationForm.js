@@ -1,13 +1,25 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-} from 'react-native';
-import {TextInput, Button} from 'react-native-paper';
-import Header from '../Components/Header';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {TextInput, Button, HelperText} from 'react-native-paper';
 import DateInput from './DateInput';
+var validate = require('validate.js');
+const validation = {
+  email: {
+    email: {
+      message: 'Por favor introduzca un email válido',
+    },
+    presence: true,
+  },
+  username: {
+      format: {
+        pattern: '[a-zA-Z0-9]+',
+        flags: 'i',
+        message:
+          'El nombre de usuario debe ser alfanúmerico y no debe contener espacios',
+      },
+      presence: true,
+  },
+};
 
 export default class RegistrationForm extends React.Component {
   constructor(props) {
@@ -15,111 +27,111 @@ export default class RegistrationForm extends React.Component {
     this.state = {
       birthdate: '',
       email: '',
-      role: 0,
-      Apellidos: '',
+      // role: 0,
+      lastname: '',
       name: '',
       password: '',
-      gender: 0,
+      // gender: 0,
       username: '',
+      passwordRepeat: '',
     };
+    this.renderHelperText = this.renderHelperText.bind(this);
   }
 
   setBirthdate = sentBirthdate => {
-    this.setState(({birthdate: sentBirthdate}));
+    this.setState({birthdate: sentBirthdate});
   };
+
+  renderHelperText(fieldName) {
+    if (this.state[fieldName].length > 0) {
+      let validationResult = validate.single(
+        this.state[fieldName],
+        validation[fieldName],
+      );
+      if (validationResult != undefined)
+        return (
+          <HelperText type="error" padding="none">
+            {validationResult[0]}
+          </HelperText>
+        );
+    }
+  }
 
   render() {
     return (
-      <View style={styles.regform} behavior="padding">
-        <Header>Registro</Header>
-        <View style={styles.container}>
-          {[
-            {label: 'Nombre', fieldName: 'name'},
-            {label: 'Apellidos', fieldName: 'lastname'},
-            {label: 'Nombre de usuario', fieldName: 'username'},
-            {label: 'Email', fieldName: 'email', autoCompleteType: 'email'},
-            {
-              label: 'Contraseña',
-              fieldName: 'password',
-              isPassword: true,
-              isSecureTextEntry: true,
-            },
-            {
-              label: 'Repetir contraseña',
-              fieldName: 'passwordRepeat',
-              isPassword: true,
-              isSecureTextEntry: true,
-            },
-          ].map(x => (
+      <View style={styles.container}>
+        {[
+          {label: 'Nombre', fieldName: 'name'},
+          {label: 'Apellidos', fieldName: 'lastname'},
+          {
+            label: 'Nombre de usuario',
+            fieldName: 'username',
+          },
+          {
+            label: 'Email',
+            fieldName: 'email',
+            autoCompleteType: 'email',
+          },
+          {
+            label: 'Contraseña',
+            fieldName: 'password',
+            isPassword: true,
+            isSecureTextEntry: true,
+          },
+          {
+            label: 'Repetir contraseña',
+            fieldName: 'passwordRepeat',
+            isPassword: true,
+            isSecureTextEntry: true,
+          },
+        ].map(x => (
+          <View key={x.label}>
             <TextInput
               mode="outlined"
               underlineColor="transparent"
               autoCorrect={false}
-              key={x.label}
               label={x.label}
+              error={
+                this.state[x.fieldName].length > 0 &&
+                validate.single(
+                  this.state[x.fieldName],
+                  validation[x.fieldName],
+                )
+              }
               secureTextEntry={x.isSecureTextEntry}
               password={x.isPassword}
               value={this.state[x.fieldName]}
               autoCompleteType={x.autoCompleteType}
               onChangeText={value => this.setState({[x.fieldName]: value})}
             />
-          ))}
+            {this.renderHelperText(x.fieldName)}
+          </View>
+        ))}
 
-          <DateInput
-            label="Fecha nacimiento"
-            onChange={this.setBirthdate}
-          />
+        <DateInput label="Fecha nacimiento" onChange={this.setBirthdate} />
 
-          <Button
-            style={styles.button}
-            mode="contained"
-            dark={true}
-            color="#69e000"
-            onPress={() => {
-              this.props.handlePress(this.state);
-            }}>
-            Aceptar
-          </Button>
-        </View>
-
-        <View style={styles.row}>
-          <Text style={styles.label}>¿Ya tienes una cuenta? </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('LoginScreen')}>
-            <Text style={styles.link}>Iniciar Sesión</Text>
-          </TouchableOpacity>
-        </View>
+        <Button
+          style={styles.button}
+          mode="contained"
+          dark={true}
+          disabled={validate(this.state, validation) != undefined}
+          color="#69e000"
+          onPress={() => {
+            this.props.handlePress(this.state);
+          }}>
+          Aceptar
+        </Button>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  regform: {
-    flex: 1,
-    padding: 20,
-    width: '100%',
-    maxWidth: 340,
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#F3F3F3',
-  },
   container: {
     width: '100%',
     marginVertical: 12,
   },
   button: {
     marginTop: 24,
-  },
-  label: {
-    color: '#525252',
-  },
-  row: {
-    flexDirection: 'row',
-    marginTop: 4,
-  },
-  link: {
-    fontWeight: 'bold',
-    color: '#15abe7',
   },
 });
