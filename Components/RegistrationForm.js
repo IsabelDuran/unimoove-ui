@@ -27,11 +27,11 @@ export default class RegistrationForm extends React.Component {
     this.state = {
       birthdate: '',
       email: '',
-      // role: 0,
+      role: 0,
       lastname: '',
       name: '',
       password: '',
-      // gender: 0,
+      gender: 0,
       username: '',
       passwordRepeat: '',
     };

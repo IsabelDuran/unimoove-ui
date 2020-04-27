@@ -1,4 +1,4 @@
-import {ApiClient, UsersApi} from './unimoove-api-client';
+import {ApiClient, UsersApi, AuthenticationApi} from './unimoove-api-client';
 
 class CustomApiClient extends ApiClient {
   callApi(
@@ -49,4 +49,9 @@ class CustomUsersApi extends UsersApi {
   }
 }
 
-export {CustomUsersApi};
+class CustomAuthenticationApi extends AuthenticationApi {
+  constructor() {
+    super(new CustomApiClient());
+  }
+}
+export {CustomUsersApi, CustomAuthenticationApi};
