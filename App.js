@@ -7,6 +7,7 @@ import LoginScreen from './screens/LoginScreen.js';
 import WelcomeScreen from './screens/WelcomeScreen.js';
 import RegistrationScreen from './screens/RegistrationScreen.js';
 import {DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
+import MainScreen from './screens/MainScreen.js';
 
 const Stack = createStackNavigator();
 
@@ -37,6 +38,11 @@ export default (App = () => (
         <Stack.Screen
           name="RegistrationScreen"
           component={RegistrationScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="MainScreen"
+          component={MainScreen}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

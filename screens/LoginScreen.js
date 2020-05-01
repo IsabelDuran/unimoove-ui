@@ -1,39 +1,45 @@
 import React from 'react';
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import LoginForm from '../Components/LoginForm';
-import {CustomAuthenticationApi} from '../CustomApiClient';
-import Header from '../Components/Header';
+import {StyleSheet, Text, View, TouchableOpacity, Alert} from 'react-native';
+import LoginForm from '../components/LoginForm';
+import Header from '../components/Header';
 import AsyncStorage from '@react-native-community/async-storage';
-var UnimooveApi = require('unimoove_api');
+import ErrorText from '../components/ErrorText';
+import {userLogin} from '../client/UsersApi';
 
 export default class LoginScreen extends React.Component {
-
-  loginUser(body) {
-    var apiInstance = new CustomAuthenticationApi();
-    let opts = {
-      body: new UnimooveApi.LoginRequest(body['password'], body['username']),
+  constructor(props) {
+    super(props);
+    this.state = {
+      isErrorVisible: false,
     };
-    var callback = function(response) {
-      if (response.ok) {
-        console.log('Inicio de sesión correcto');
-        response.json().then(async data => {
-          try {
-            await AsyncStorage.setItem('ApiKeyAuth', data.apiKey);
-          } catch (error) {
-            console.error(error)
-          }
-        });
-      } else response.json().then(data => console.log(data));
-      return {};
-    };
-    apiInstance.userLogin(opts, callback);
+    this.loginUser = this.loginUser.bind(this);
+  }
+  handleUserLoginResponse(response){
+    console.log('Inicio de sesión correcto');
+    response.json().then(async data => {
+      try {
+        await AsyncStorage.setItem('ApiKeyAuth', data.apiKey);
+        this.props.navigation.navigate('MainScreen');
+      } catch (error) {
+        console.error(error);
+      }
+    });
+  }
+  loginUser(loginRequest) {
+    userLogin(loginRequest)
+      .then(this.handleUserLoginResponse.bind(this))
+      .catch(error => this.setState({isErrorVisible: true}));
   }
   render() {
     return (
       <View style={styles.loginScreen} behavior="padding">
         <Header>¡Hola de nuevo!</Header>
+        {this.state.isErrorVisible ? (
+          <ErrorText>Usuario o contraseña incorrectos</ErrorText>
+        ) : (
+          undefined
+        )}
         <LoginForm handlePress={this.loginUser} />
-
         <View style={styles.row}>
           <Text style={styles.label}>¿Aún no tienes una cuenta? </Text>
           <TouchableOpacity

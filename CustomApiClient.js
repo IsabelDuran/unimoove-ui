@@ -35,11 +35,18 @@ class CustomApiClient extends ApiClient {
       '===================================================================================================================',
     );
     bodyParam = JSON.stringify(bodyParam);
-    return fetch(`${this.basePath}${path}`, {
-      method: httpMethod,
-      headers: new Headers({'content-type': 'application/json', 'Accept': 'application/json' }),
-      body: bodyParam, 
-    }).then(callback).catch(reason=>console.log(reason));
+    if(httpMethod == "GET"){
+      return fetch(this.buildUrl(path, pathParams), {
+        method: httpMethod,
+        headers: new Headers({'content-type': 'application/json', 'Accept': 'application/json',}),
+      }).then(callback).catch(reason=>console.log(reason));
+    } else {
+      return fetch(`${this.basePath}${path}`, {
+        method: httpMethod,
+        headers: new Headers({'content-type': 'application/json', 'Accept': 'application/json' }),
+        body: bodyParam, 
+      }).then(callback).catch(reason=>console.log(reason));
+    }
   }
 }
 
@@ -54,4 +61,4 @@ class CustomAuthenticationApi extends AuthenticationApi {
     super(new CustomApiClient());
   }
 }
-export {CustomUsersApi, CustomAuthenticationApi};
+export {CustomUsersApi, CustomAuthenticationApi, CustomApiClient};

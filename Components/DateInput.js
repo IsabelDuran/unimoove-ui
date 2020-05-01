@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {View, Button, Platform, Keyboard} from 'react-native';
+import React from 'react';
+import {View, Keyboard} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {TextInput} from 'react-native-paper';
 
@@ -15,7 +15,7 @@ export default class DateInput extends React.Component {
   }
 
   setDate(event, newDate) {
-    if (newDate != undefined) {
+    if (newDate !== undefined) {
       this.setState({
         show: false,
         date: newDate,
@@ -23,7 +23,6 @@ export default class DateInput extends React.Component {
       });
       this.props.onChange(this.state.textDate);
     } else this.setState({show: false});
-
   }
 
   render() {

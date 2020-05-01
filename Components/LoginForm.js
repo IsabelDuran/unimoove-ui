@@ -1,7 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {TextInput, Button} from 'react-native-paper';
-import Header from '../Components/Header';
 
 export default class LoginForm extends React.Component {
   constructor(props) {

@@ -1,40 +1,30 @@
 import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import RegistrationForm from '../Components/RegistrationForm';
-import {CustomUsersApi} from '../CustomApiClient';
-import Header from '../Components/Header';
-var UnimooveApi = require('unimoove_api');
+import RegistrationForm from '../components/RegistrationForm';
+import Header from '../components/Header';
+import {addUser} from '../client/UsersApi';
 
 export default class RegistrationScreen extends React.Component {
-  registerUser(body) {
-    var apiInstance = new CustomUsersApi();
-    let opts = {
-      body: new UnimooveApi.UserRegistrationRequest(
-        body['birthdate'],
-        body['email'],
-        body['gender'],
-        body['lastname'],
-        body['name'],
-        body['password'],
-        body['role'],
-        body['username'],
-      ), // UserRegistrationRequest | User to add
-    };
-    var callback = function(response) {
-      if (response.ok) console.log('Usuario registrado');
-      else response.json().then(data => console.log(data));
-      return {};
-    };
-    apiInstance.addUser(opts, callback);
+  constructor(props) {
+    super(props);
+    this.registerUser = this.registerUser.bind(this);
+  }
+  handleAddUserResponse(response) {
+    console.log('Usuario registrado');
+    console.log(JSON.stringify(response));
+    this.props.navigation.navigate('LoginScreen');
+  }
+  registerUser(userRegistrationRequest) {
+    addUser(userRegistrationRequest)
+      .then(this.handleAddUserResponse.bind(this))
+      .catch(error => console.log(error));
   }
 
   render() {
     return (
-      <View style={styles.registrationScreen}  behavior="padding">
+      <View style={styles.registrationScreen} behavior="padding">
         <Header>Registro</Header>
-        <RegistrationForm
-          handlePress={this.registerUser}
-        />
+        <RegistrationForm handlePress={this.registerUser} />
         <View style={styles.row}>
           <Text style={styles.label}>¿Ya tienes una cuenta? </Text>
           <TouchableOpacity
