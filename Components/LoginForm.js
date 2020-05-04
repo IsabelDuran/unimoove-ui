@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {TextInput, Button} from 'react-native-paper';
 
 export default class LoginForm extends React.Component {

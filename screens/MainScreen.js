@@ -1,28 +1,116 @@
 import React from 'react';
-import {Text} from 'react-native';
+import {ActivityIndicator, Colors, Appbar, Button} from 'react-native-paper';
+import {getUser} from '../client/UsersApi';
+import {Text, View, StyleSheet, Image} from 'react-native';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 var SecurityUtils = require('../utils/SecurityUtils');
+const Drawer = createDrawerNavigator();
 
-
-function handleGetUserResponse(response) {
-  console.log(JSON.stringify(response));
-}
 export default class MainScreen extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      user: {},
+      loading: true,
+    };
+    this.startData = this.startData.bind(this);
   }
-  componentDidMount() {
-   /* console.log(JSON.stringify(SecurityUtils));
-    SecurityUtils.getToken().then(token => {
-      var ApiKeyAuth = defaultClient.authentications['ApiKeyAuth'];
-      ApiKeyAuth.apiKey = token;
 
-      SecurityUtils.tokenInfo().then(info => {
-        let apiInstance = new CustomUsersApi();
-        apiInstance.getUser(info.sub, handleGetUserResponse);
-      });
-    });*/
+  handleGetUserResponse(response) {
+    response.json().then(data => this.setState({user: data, loading: false}));
   }
+
+  componentDidMount() {
+    SecurityUtils.tokenInfo().then(info => {
+      SecurityUtils.authorizeApi([info.sub], getUser).then(
+        this.handleGetUserResponse.bind(this),
+      );
+    });
+  }
+
+  startData({navigation}) {
+    return (
+      <View style={styles.background}>
+        <Appbar.Header dark={true}>
+          <Text style={styles.logo}>Unimoove</Text>
+        </Appbar.Header>
+        <View style={styles.container}>
+          <Text style={styles.helloText}> ¡Hola, {this.state.user.name}!</Text>
+          <Text style={styles.underText}>¿Cómo vas hoy a clase?</Text>
+          <Image
+            source={require('../assets/img/network.png')}
+            style={styles.image}
+          />
+          <Button
+            style={styles.button}
+            color="#15abe7"
+            mode="contained"
+            dark={true}>
+            ¡Quiero publicar un viaje!
+          </Button>
+          <Button
+            style={styles.button}
+            mode="contained"
+            dark={true}
+            color="#69e000">
+            ¡Estoy buscando un viaje!
+          </Button>
+        </View>
+      </View>
+    );
+  }
+
   render() {
-    return <Text>Estas en la main screen</Text>;
+    if (this.state.loading) {
+      return <ActivityIndicator animating={true} color={Colors.red800} />;
+    } else {
+      return (
+        <Drawer.Navigator>
+          <Drawer.Screen name="Inicio" component={this.startData} />
+        </Drawer.Navigator>
+      );
+    }
   }
 }
+
+const styles = StyleSheet.create({
+  logo: {
+    fontFamily: 'Pacifico-Regular',
+    color: 'white',
+    fontSize: 25,
+    marginLeft: 14,
+    alignSelf: 'center',
+  },
+  container: {
+    flex: 1,
+    padding: 20,
+    width: '100%',
+    maxWidth: 400,
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FFFFFF',
+  },
+  background: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+  },
+  helloText: {
+    fontFamily: 'OpenSans-Bold',
+    color: '#575757',
+    fontSize: 25,
+  },
+  underText: {
+    fontFamily: 'OpenSans-Bold',
+    color: '#575757',
+    fontSize: 20,
+  },
+  image: {
+    marginTop: 30,
+    width: 280,
+    height: 280,
+  },
+  button: {
+    marginTop: 20,
+  },
+});

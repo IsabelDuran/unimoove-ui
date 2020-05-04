@@ -12,6 +12,17 @@ export function addUser(userRegistrationRequest) {
   });
 }
 
+export function getUser(username, token) {
+  return fetch(`${BASE_URL}/users/${username}`, {
+    method: 'GET',
+    headers: new Headers({
+      'content-type': 'application/json',
+      Accept: 'application/json',
+      'X-API-KEY': token,
+    }),
+  });
+}
+
 export function userLogin(loginRequest) {
   return fetch(`${BASE_URL}/authentication/login`, {
     method: 'POST',
