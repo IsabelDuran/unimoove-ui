@@ -1,9 +1,11 @@
 import React from 'react';
-import {ActivityIndicator, Colors, Appbar, Button} from 'react-native-paper';
+import {Appbar, Button} from 'react-native-paper';
 import {getUser} from '../client/UsersApi';
 import {Text, View, StyleSheet, Image} from 'react-native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
-import MyProfileScreen from '../screens/MyProfileScreen'
+import MyProfileScreen from '../screens/MyProfileScreen';
+import {useFocusEffect} from '@react-navigation/native';
+import LoadingIndicator from '../components/LoadingIndicator';
 var SecurityUtils = require('../utils/SecurityUtils');
 const Drawer = createDrawerNavigator();
 
@@ -21,6 +23,13 @@ export default class MainScreen extends React.Component {
     response.json().then(data => this.setState({user: data, loading: false}));
   }
 
+  obtainLogedInUserData() {
+    SecurityUtils.tokenInfo().then(info => {
+      SecurityUtils.authorizeApi([info.sub], getUser).then(
+        this.handleGetUserResponse.bind(this),
+      );
+    });
+  }
   componentDidMount() {
     SecurityUtils.tokenInfo().then(info => {
       SecurityUtils.authorizeApi([info.sub], getUser).then(
@@ -30,6 +39,7 @@ export default class MainScreen extends React.Component {
   }
 
   startData({navigation}) {
+    useFocusEffect(React.useCallback(() => this.obtainLogedInUserData(), []));
     return (
       <View style={styles.background}>
         <Appbar.Header dark={true}>
@@ -63,7 +73,7 @@ export default class MainScreen extends React.Component {
 
   render() {
     if (this.state.loading) {
-      return <ActivityIndicator animating={true} color={Colors.red800} />;
+      return <LoadingIndicator />;
     } else {
       return (
         <Drawer.Navigator edgeWidth={60}>

@@ -10,6 +10,8 @@ import {DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
 import MainScreen from './screens/MainScreen.js';
 import SplashScreen from './screens/SplashScreen';
 import UsernameChangeScreen from './screens/UsernameChangeScreen';
+import NameChangeScreen from './screens/NameChangeScreen';
+import LastnameChangeScreen from './screens/LastnameChangeScreen';
 var SecurityUtils = require('./utils/SecurityUtils');
 
 const Stack = createStackNavigator();
@@ -34,11 +36,6 @@ export default class App extends Component {
   }
 
   async findExistingToken() {
-    /* SecurityUtils.clearAll().then(
-      SecurityUtils.getToken().then(token =>
-        this.setState({isUserSignedIn: token, isLoading: false}),
-      ),
-    );*/
     SecurityUtils.getToken().then(token =>
       this.setState({isUserSignedIn: token, isLoading: false}),
     );
@@ -84,6 +81,26 @@ export default class App extends Component {
                     options={{
                       headerShown: true,
                       title: 'Cambiar nombre de usuario',
+                      headerStyle: {backgroundColor: '#12ABE7'},
+                      headerTintColor: '#fff',
+                    }}
+                  />
+                  <Stack.Screen
+                    name="NameChangeScreen"
+                    component={NameChangeScreen}
+                    options={{
+                      headerShown: true,
+                      title: 'Cambiar nombre',
+                      headerStyle: {backgroundColor: '#12ABE7'},
+                      headerTintColor: '#fff',
+                    }}
+                  />
+                  <Stack.Screen
+                    name="LastnameChangeScreen"
+                    component={LastnameChangeScreen}
+                    options={{
+                      headerShown: true,
+                      title: 'Cambiar apellidos',
                       headerStyle: {backgroundColor: '#12ABE7'},
                       headerTintColor: '#fff',
                     }}

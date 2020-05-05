@@ -1,28 +1,28 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import ChangeForm from '../components/ChangeForm';
-import {modifyUserUsername} from '../client/UsersApi';
+import {modifyUserName} from '../client/UsersApi';
 var SecurityUtils = require('../utils/SecurityUtils');
 
-export default class UsernameChangeScreen extends React.Component {
+export default class NameChangeScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.changeUserUsername = this.changeUserUsername.bind(this);
+    this.changeUserName = this.changeUserName.bind(this);
   }
 
-  handleChangeUsernameResponse(response) {
-    console.log('Nombre de usuario modificado');
+  handleChangeNameResponse(response) {
+    console.log('Nombre modificado');
     console.log(JSON.stringify(response));
     this.props.navigation.goBack();
   }
 
-  changeUserUsername(userUsernameChangeRequest) {
+  changeUserName(userUsernameChangeRequest) {
     let body = {
-      newUsername: userUsernameChangeRequest.newValue,
+      newName: userUsernameChangeRequest.newValue,
     };
     SecurityUtils.tokenInfo().then(info => {
-      SecurityUtils.authorizeApi([body, info.sub], modifyUserUsername).then(
-        this.handleChangeUsernameResponse.bind(this),
+      SecurityUtils.authorizeApi([body, info.sub], modifyUserName).then(
+        this.handleChangeNameResponse.bind(this),
       );
     });
   }
@@ -31,8 +31,8 @@ export default class UsernameChangeScreen extends React.Component {
     return (
       <View style={styles.container}>
         <ChangeForm
-          value={this.props.route.params.username}
-          handlePress={this.changeUserUsername}
+          value={this.props.route.params.name}
+          handlePress={this.changeUserName}
         />
       </View>
     );

@@ -26,11 +26,20 @@ async function clearAll() {
   }
 }
 
+async function deleteToken() {
+  try {
+    await AsyncStorage.removeItem('ApiKeyAuth');
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 var SecurityUtils = {
   getToken: getToken,
   tokenInfo: tokenInfo,
   authorizeApi: authorizeApi,
   clearAll: clearAll,
+  deleteToken: deleteToken,
 };
 
 module.exports = SecurityUtils;

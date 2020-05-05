@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View, TouchableOpacity, Alert} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import LoginForm from '../components/LoginForm';
 import Header from '../components/Header';
 import AsyncStorage from '@react-native-community/async-storage';

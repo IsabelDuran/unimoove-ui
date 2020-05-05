@@ -14,9 +14,17 @@ export default class ChangeForm extends React.Component {
     return (
       <>
         <TextInput label="Actual" value={this.props.value} disabled={true} />
-        <TextInput label="Nuevo" />
+        <TextInput
+          label="Nuevo"
+          value={this.state.newValue}
+          onChangeText={value => this.setState({newValue: value})}
+        />
         <View style={styles.buttonContainer}>
-          <Button color="#15abe7" mode="contained" dark={true}>
+          <Button
+            color="#15abe7"
+            mode="contained"
+            dark={true}
+            onPress={() => this.props.handlePress(this.state)}>
             Enviar
           </Button>
         </View>
