@@ -3,6 +3,7 @@ import {ActivityIndicator, Colors, Appbar, Button} from 'react-native-paper';
 import {getUser} from '../client/UsersApi';
 import {Text, View, StyleSheet, Image} from 'react-native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
+import MyProfileScreen from '../screens/MyProfileScreen'
 var SecurityUtils = require('../utils/SecurityUtils');
 const Drawer = createDrawerNavigator();
 
@@ -53,7 +54,7 @@ export default class MainScreen extends React.Component {
             mode="contained"
             dark={true}
             color="#69e000">
-            ¡Estoy buscando un viaje!
+            Estoy buscando un viaje
           </Button>
         </View>
       </View>
@@ -65,8 +66,12 @@ export default class MainScreen extends React.Component {
       return <ActivityIndicator animating={true} color={Colors.red800} />;
     } else {
       return (
-        <Drawer.Navigator>
+        <Drawer.Navigator edgeWidth={60}>
           <Drawer.Screen name="Inicio" component={this.startData} />
+          <Drawer.Screen name="Mi perfil" component={MyProfileScreen} />
+          <Drawer.Screen name="Mis coches" component={MyProfileScreen} />
+          <Drawer.Screen name="Mis reservas" component={MyProfileScreen} />
+          <Drawer.Screen name="Mis viajes" component={MyProfileScreen} />
         </Drawer.Navigator>
       );
     }
@@ -106,11 +111,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   image: {
-    marginTop: 30,
+    marginTop: 35,
     width: 280,
     height: 280,
   },
   button: {
-    marginTop: 20,
+    marginTop: 25,
   },
 });

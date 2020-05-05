@@ -9,6 +9,7 @@ import RegistrationScreen from './screens/RegistrationScreen.js';
 import {DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
 import MainScreen from './screens/MainScreen.js';
 import SplashScreen from './screens/SplashScreen';
+import UsernameChangeScreen from './screens/UsernameChangeScreen';
 var SecurityUtils = require('./utils/SecurityUtils');
 
 const Stack = createStackNavigator();
@@ -33,10 +34,12 @@ export default class App extends Component {
   }
 
   async findExistingToken() {
-   /* SecurityUtils.clearAll().then(
-      SecurityUtils.getToken().then(this.handleRecieveToken.bind(this)),
+    /* SecurityUtils.clearAll().then(
+      SecurityUtils.getToken().then(token =>
+        this.setState({isUserSignedIn: token, isLoading: false}),
+      ),
     );*/
-     SecurityUtils.getToken().then(token =>
+    SecurityUtils.getToken().then(token =>
       this.setState({isUserSignedIn: token, isLoading: false}),
     );
   }
@@ -69,11 +72,23 @@ export default class App extends Component {
                   />
                 </>
               ) : (
-                <Stack.Screen
-                  name="MainScreen"
-                  component={MainScreen}
-                  options={{headerShown: false}}
-                />
+                <>
+                  <Stack.Screen
+                    name="MainScreen"
+                    component={MainScreen}
+                    options={{headerShown: false}}
+                  />
+                  <Stack.Screen
+                    name="UsernameChangeScreen"
+                    component={UsernameChangeScreen}
+                    options={{
+                      headerShown: true,
+                      title: 'Cambiar nombre de usuario',
+                      headerStyle: {backgroundColor: '#12ABE7'},
+                      headerTintColor: '#fff',
+                    }}
+                  />
+                </>
               )}
             </Stack.Navigator>
           </NavigationContainer>
