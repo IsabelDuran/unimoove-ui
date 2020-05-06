@@ -23,7 +23,7 @@ export default class ChangeForm extends React.Component {
           <Button
             color="#15abe7"
             mode="contained"
-            diabled={!this.state.newValue}
+            disabled={!this.state.newValue}
             dark={true}
             onPress={() => this.props.handlePress(this.state)}>
             Enviar

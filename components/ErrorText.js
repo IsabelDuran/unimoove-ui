@@ -13,5 +13,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#D61E1E',
     paddingVertical: 14,
+    marginLeft:14
   },
 });

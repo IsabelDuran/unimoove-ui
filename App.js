@@ -12,6 +12,7 @@ import SplashScreen from './screens/SplashScreen';
 import UsernameChangeScreen from './screens/UsernameChangeScreen';
 import NameChangeScreen from './screens/NameChangeScreen';
 import LastnameChangeScreen from './screens/LastnameChangeScreen';
+import EmailChangeScreen from './screens/EmailChangeScreen';
 var SecurityUtils = require('./utils/SecurityUtils');
 
 const Stack = createStackNavigator();
@@ -104,6 +105,16 @@ export default class App extends Component {
                     options={{
                       headerShown: true,
                       title: 'Cambiar apellidos',
+                      headerStyle: {backgroundColor: '#12ABE7'},
+                      headerTintColor: '#fff',
+                    }}
+                  />
+                  <Stack.Screen
+                    name="EmailChangeScreen"
+                    component={EmailChangeScreen}
+                    options={{
+                      headerShown: true,
+                      title: 'Cambiar email',
                       headerStyle: {backgroundColor: '#12ABE7'},
                       headerTintColor: '#fff',
                     }}

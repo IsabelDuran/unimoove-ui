@@ -96,6 +96,9 @@ export default class MyProfile extends Component {
               value={this.state.user.email}
               onFocus={() => {
                 Keyboard.dismiss();
+                this.props.navigation.navigate('EmailChangeScreen', {
+                  email: this.state.user.email,
+                });
               }}
             />
             <TextInput
