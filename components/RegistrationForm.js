@@ -1,7 +1,8 @@
 import React from 'react';
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {TextInput, Button, HelperText} from 'react-native-paper';
 import DateInput from './DateInput';
+import PasswordInput from './PasswordInput';
 var validate = require('validate.js');
 const validation = {
   email: {
@@ -11,13 +12,13 @@ const validation = {
     presence: true,
   },
   username: {
-      format: {
-        pattern: '[a-zA-Z0-9]+',
-        flags: 'i',
-        message:
-          'El nombre de usuario debe ser alfanúmerico y no debe contener espacios',
-      },
-      presence: true,
+    format: {
+      pattern: '[a-zA-Z0-9]+',
+      flags: 'i',
+      message:
+        'El nombre de usuario debe ser alfanúmerico y no debe contener espacios',
+    },
+    presence: true,
   },
 };
 
@@ -38,6 +39,28 @@ export default class RegistrationForm extends React.Component {
     this.renderHelperText = this.renderHelperText.bind(this);
   }
 
+  isFormIncompleteOrIncorrect() {
+    if (
+      validate(this.state, validation) !== undefined ||
+      !this.state.name ||
+      !this.state.name ||
+      !this.state.password ||
+      !this.state.passwordRepeat ||
+      !this.state.birthdate
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  setPassword = sentPasswords => {
+    this.setState({
+      password: sentPasswords.password,
+      passwordRepeat: sentPasswords.passwordRepeat,
+    });
+  };
+
   setBirthdate = sentBirthdate => {
     this.setState({birthdate: sentBirthdate});
   };
@@ -48,12 +71,13 @@ export default class RegistrationForm extends React.Component {
         this.state[fieldName],
         validation[fieldName],
       );
-      if (validationResult != undefined)
+      if (validationResult !== undefined) {
         return (
           <HelperText type="error" padding="none">
             {validationResult[0]}
           </HelperText>
         );
+      }
     }
   }
 
@@ -71,18 +95,6 @@ export default class RegistrationForm extends React.Component {
             label: 'Email',
             fieldName: 'email',
             autoCompleteType: 'email',
-          },
-          {
-            label: 'Contraseña',
-            fieldName: 'password',
-            isPassword: true,
-            isSecureTextEntry: true,
-          },
-          {
-            label: 'Repetir contraseña',
-            fieldName: 'passwordRepeat',
-            isPassword: true,
-            isSecureTextEntry: true,
           },
         ].map(x => (
           <View key={x.label}>
@@ -107,14 +119,14 @@ export default class RegistrationForm extends React.Component {
             {this.renderHelperText(x.fieldName)}
           </View>
         ))}
-
+        <PasswordInput onChange={this.setPassword} />
         <DateInput label="Fecha nacimiento" onChange={this.setBirthdate} />
 
         <Button
           style={styles.button}
           mode="contained"
           dark={true}
-          disabled={validate(this.state, validation) != undefined}
+          disabled={this.isFormIncompleteOrIncorrect()}
           color="#69e000"
           onPress={() => {
             this.props.handlePress(this.state);

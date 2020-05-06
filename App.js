@@ -36,6 +36,9 @@ export default class App extends Component {
   }
 
   async findExistingToken() {
+    /*SecurityUtils.clearAll().then(
+      SecurityUtils.getToken().then(this.handleRecieveToken.bind(this)),
+    );*/
     SecurityUtils.getToken().then(token =>
       this.setState({isUserSignedIn: token, isLoading: false}),
     );
