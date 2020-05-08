@@ -107,6 +107,7 @@ export default class MyProfile extends Component {
               value="***********"
               onFocus={() => {
                 Keyboard.dismiss();
+                this.props.navigation.navigate('PasswordChangeScreen');
               }}
             />
             <Text style={styles.informativeText}>Otros</Text>

@@ -4,7 +4,7 @@ import LoginForm from '../components/LoginForm';
 import Header from '../components/Header';
 import AsyncStorage from '@react-native-community/async-storage';
 import ErrorText from '../components/ErrorText';
-import {userLogin} from '../client/UsersApi';
+import {userLogin} from '../client/AuthenticationApi';
 
 export default class LoginScreen extends React.Component {
   constructor(props) {

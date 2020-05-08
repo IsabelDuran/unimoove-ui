@@ -66,14 +66,14 @@ export function modifyUserEmail(userEmailChangeRequest, username, token) {
     body: JSON.stringify(userEmailChangeRequest),
   });
 }
-
-export function userLogin(loginRequest) {
-  return fetch(`${BASE_URL}/authentication/login`, {
-    method: 'POST',
+export function modifyUserPassword(userPasswordChangeRequest, username, token) {
+  return fetch(`${BASE_URL}/users/${username}/password`, {
+    method: 'PUT',
     headers: new Headers({
       'content-type': 'application/json',
       Accept: 'application/json',
+      'X-API-KEY': token,
     }),
-    body: JSON.stringify(loginRequest),
+    body: JSON.stringify(userPasswordChangeRequest),
   });
 }

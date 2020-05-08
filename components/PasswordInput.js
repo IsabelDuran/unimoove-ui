@@ -36,7 +36,7 @@ export default class PasswordInput extends React.Component {
         ].map(x => (
           <TextInput
             key={x.label}
-            mode="outlined"
+            mode={this.props.mode}
             underlineColor="transparent"
             autoCorrect={false}
             label={x.label}

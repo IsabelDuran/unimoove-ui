@@ -119,7 +119,7 @@ export default class RegistrationForm extends React.Component {
             {this.renderHelperText(x.fieldName)}
           </View>
         ))}
-        <PasswordInput onChange={this.setPassword} />
+        <PasswordInput onChange={this.setPassword} mode="outlined" />
         <DateInput label="Fecha nacimiento" onChange={this.setBirthdate} />
 
         <Button
