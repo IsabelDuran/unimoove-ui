@@ -56,7 +56,7 @@ export default class MyProfile extends Component {
               />
               <Text style={styles.text}>Mi Perfil</Text>
             </View>
-            <Text style={styles.informativeText}>Informacion de mi cuenta</Text>
+            <Text style={styles.informativeText}>Información de mi cuenta</Text>
             <TextInput
               label="Nombre de usuario"
               caretHidden={true}
@@ -140,11 +140,11 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     alignSelf: 'center',
     alignItems: 'center',
-    backgroundColor: '#E8E8E8',
+    backgroundColor: '#fafafa',
   },
   background: {
     flex: 1,
-    backgroundColor: '#E8E8E8',
+    backgroundColor: '#fafafa',
   },
   text: {
     fontFamily: 'OpenSans-Bold',

@@ -77,3 +77,14 @@ export function modifyUserPassword(userPasswordChangeRequest, username, token) {
     body: JSON.stringify(userPasswordChangeRequest),
   });
 }
+
+export function getCarsFromUser(username, token) {
+  return fetch(`${BASE_URL}/users/${username}/cars`, {
+    method: 'GET',
+    headers: new Headers({
+      'content-type': 'application/json',
+      Accept: 'application/json',
+      'X-API-KEY': token,
+    }),
+  });
+}

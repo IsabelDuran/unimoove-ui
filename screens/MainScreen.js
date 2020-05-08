@@ -4,6 +4,9 @@ import {getUser} from '../client/UsersApi';
 import {Text, View, StyleSheet, Image} from 'react-native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import MyProfileScreen from '../screens/MyProfileScreen';
+import MyCarsScreen from '../screens/MyCarsScreen';
+import MyTripsScreen from '../screens/MyTripsScreen';
+import MyReservationsScreen from '../screens/MyReservationsScreen';
 import {useFocusEffect} from '@react-navigation/native';
 import LoadingIndicator from '../components/LoadingIndicator';
 var SecurityUtils = require('../utils/SecurityUtils');
@@ -79,9 +82,9 @@ export default class MainScreen extends React.Component {
         <Drawer.Navigator edgeWidth={60}>
           <Drawer.Screen name="Inicio" component={this.startData} />
           <Drawer.Screen name="Mi perfil" component={MyProfileScreen} />
-          <Drawer.Screen name="Mis coches" component={MyProfileScreen} />
-          <Drawer.Screen name="Mis reservas" component={MyProfileScreen} />
-          <Drawer.Screen name="Mis viajes" component={MyProfileScreen} />
+          <Drawer.Screen name="Mis coches" component={MyCarsScreen} />
+          <Drawer.Screen name="Mis reservas" component={MyReservationsScreen} />
+          <Drawer.Screen name="Mis viajes" component={MyTripsScreen} />
         </Drawer.Navigator>
       );
     }
