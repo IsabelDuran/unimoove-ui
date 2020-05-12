@@ -1,6 +1,13 @@
 import React, {Component} from 'react';
-import {Text, View, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import {Appbar, FAB, Card} from 'react-native-paper';
+import {
+  Text,
+  View,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
+import {Appbar, FAB, Card, Button} from 'react-native-paper';
 import {getUser, getCarsFromUser} from '../client/UsersApi';
 import LoadingIndicator from '../components/LoadingIndicator';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -30,7 +37,6 @@ export default class MyCarsScreen extends Component {
   }
 
   fetchUserDataWithCars() {
-    this.setState({loading: true});
     SecurityUtils.tokenInfo().then(info => {
       SecurityUtils.authorizeApi([info.sub], getUser).then(
         this.handleGetUserResponse.bind(this),
@@ -55,11 +61,6 @@ export default class MyCarsScreen extends Component {
     } else {
       return (
         <>
-          <FAB
-            style={styles.fab}
-            icon="plus"
-            onPress={() => console.log('Pressed')}
-          />
           <Appbar.Header dark={true}>
             <Text style={styles.logo}>Unimoove</Text>
           </Appbar.Header>
@@ -79,7 +80,9 @@ export default class MyCarsScreen extends Component {
                   </Text>
                   <TouchableOpacity
                     onPress={() =>
-                      this.props.navigation.navigate('CreateCarScreen')
+                      this.props.navigation.navigate('CreateCarScreen', {
+                        username: this.state.user.username,
+                      })
                     }>
                     <Text style={styles.link}>
                       ¿Quieres añadir un coche ahora?
@@ -88,9 +91,31 @@ export default class MyCarsScreen extends Component {
                 </View>
               </>
             ) : (
-              undefined
+              this.state.cars.map(car => {
+                return (
+                  <Card key={car.plate}>
+                    <Card.Title
+                      title={car.brand + ' ' + car.model}
+                      subtitle={car.plate}
+                    />
+                    <Card.Actions>
+                      <Button>Editar</Button>
+                      <Button color="red">Eliminar</Button>
+                    </Card.Actions>
+                  </Card>
+                );
+              })
             )}
           </ScrollView>
+          <FAB
+            style={styles.fab}
+            icon="plus"
+            onPress={() =>
+              this.props.navigation.navigate('CreateCarScreen', {
+                username: this.state.user.username,
+              })
+            }
+          />
         </>
       );
     }

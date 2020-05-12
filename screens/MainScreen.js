@@ -7,7 +7,6 @@ import MyProfileScreen from '../screens/MyProfileScreen';
 import MyCarsScreen from '../screens/MyCarsScreen';
 import MyTripsScreen from '../screens/MyTripsScreen';
 import MyReservationsScreen from '../screens/MyReservationsScreen';
-import {useFocusEffect} from '@react-navigation/native';
 import LoadingIndicator from '../components/LoadingIndicator';
 var SecurityUtils = require('../utils/SecurityUtils');
 const Drawer = createDrawerNavigator();
@@ -33,7 +32,7 @@ export default class MainScreen extends React.Component {
       );
     });
   }
-  componentDidMount() {
+  fetchUserData() {
     SecurityUtils.tokenInfo().then(info => {
       SecurityUtils.authorizeApi([info.sub], getUser).then(
         this.handleGetUserResponse.bind(this),
@@ -41,8 +40,18 @@ export default class MainScreen extends React.Component {
     });
   }
 
-  startData({navigation}) {
-    useFocusEffect(React.useCallback(() => this.obtainLogedInUserData(), []));
+  componentDidMount() {
+    this._unsubscribe = this.props.navigation.addListener(
+      'focus',
+      this.fetchUserData.bind(this),
+    );
+  }
+
+  componentWillUnmount() {
+    this._unsubscribe();
+  }
+
+  startData() {
     return (
       <View style={styles.background}>
         <Appbar.Header dark={true}>

@@ -1,69 +1,49 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {TextInput, Button, HelperText} from 'react-native-paper';
-import DateInput from './DateInput';
-import PasswordInput from './PasswordInput';
 var validate = require('validate.js');
 const validation = {
-  email: {
-    email: {
-      message: 'Por favor introduzca un email válido',
-    },
-    presence: true,
-  },
-  username: {
+  plate: {
     format: {
       pattern: '[a-zA-Z0-9]+',
       flags: 'i',
-      message:
-        'El nombre de usuario debe ser alfanúmerico y no debe contener espacios',
+      message: 'La matrícula debe ser alfanúmerica y no debe contener espacios',
+    },
+    presence: true,
+  },
+  seats: {
+    format: {
+      pattern: '[0-9]+',
+      flags: 'i',
+      message: 'El número de asientos solo puede ser un número',
     },
     presence: true,
   },
 };
-
-export default class RegistrationForm extends React.Component {
+export default class CarCreationForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      birthdate: '',
-      email: '',
-      role: 0,
-      lastname: '',
-      name: '',
-      password: '',
-      gender: 0,
-      username: '',
-      passwordRepeat: '',
+      brand: '',
+      model: '',
+      plate: '',
+      seats: '',
     };
-    this.renderHelperText = this.renderHelperText.bind(this);
   }
 
   isFormIncompleteOrIncorrect() {
     if (
       validate(this.state, validation) !== undefined ||
-      !this.state.name ||
-      !this.state.lastname ||
-      !this.state.password ||
-      !this.state.passwordRepeat ||
-      !this.state.birthdate
+      !this.state.brand ||
+      !this.state.model ||
+      !this.state.plate ||
+      !this.state.seats
     ) {
       return true;
     } else {
       return false;
     }
   }
-
-  setPassword = sentPasswords => {
-    this.setState({
-      password: sentPasswords.password,
-      passwordRepeat: sentPasswords.passwordRepeat,
-    });
-  };
-
-  setBirthdate = sentBirthdate => {
-    this.setState({birthdate: sentBirthdate});
-  };
 
   renderHelperText(fieldName) {
     if (this.state[fieldName].length > 0) {
@@ -85,16 +65,18 @@ export default class RegistrationForm extends React.Component {
     return (
       <View style={styles.container}>
         {[
-          {label: 'Nombre', fieldName: 'name'},
-          {label: 'Apellidos', fieldName: 'lastname'},
+          {label: 'Marca del coche', fieldName: 'brand'},
           {
-            label: 'Nombre de usuario',
-            fieldName: 'username',
+            label: 'Modelo',
+            fieldName: 'model',
           },
           {
-            label: 'Email',
-            fieldName: 'email',
-            autoCompleteType: 'email',
+            label: 'Matrícula',
+            fieldName: 'plate',
+          },
+          {
+            label: 'Número de asientos',
+            fieldName: 'seats',
           },
         ].map(x => (
           <View key={x.label}>
@@ -110,8 +92,6 @@ export default class RegistrationForm extends React.Component {
                   validation[x.fieldName],
                 )
               }
-              secureTextEntry={x.isSecureTextEntry}
-              password={x.isPassword}
               value={this.state[x.fieldName]}
               autoCompleteType={x.autoCompleteType}
               onChangeText={value => this.setState({[x.fieldName]: value})}
@@ -119,8 +99,6 @@ export default class RegistrationForm extends React.Component {
             {this.renderHelperText(x.fieldName)}
           </View>
         ))}
-        <PasswordInput onChange={this.setPassword} mode="outlined" />
-        <DateInput label="Fecha nacimiento" onChange={this.setBirthdate} />
 
         <Button
           style={styles.button}
@@ -131,7 +109,7 @@ export default class RegistrationForm extends React.Component {
           onPress={() => {
             this.props.handlePress(this.state);
           }}>
-          Aceptar
+          Añadir coche
         </Button>
       </View>
     );

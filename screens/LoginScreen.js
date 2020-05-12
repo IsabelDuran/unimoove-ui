@@ -28,6 +28,7 @@ export default class LoginScreen extends React.Component {
       this.setState({isErrorVisible: true});
     }
   }
+
   loginUser(loginRequest) {
     userLogin(loginRequest)
       .then(this.handleUserLoginResponse.bind(this))

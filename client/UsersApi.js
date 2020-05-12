@@ -88,3 +88,14 @@ export function getCarsFromUser(username, token) {
     }),
   });
 }
+export function addCar(carCreationRequest, username, token) {
+  return fetch(`${BASE_URL}/users/${username}/cars`, {
+    method: 'POST',
+    headers: new Headers({
+      'content-type': 'application/json',
+      Accept: 'application/json',
+      'X-API-KEY': token,
+    }),
+    body: JSON.stringify(carCreationRequest),
+  });
+}
