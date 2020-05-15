@@ -120,7 +120,14 @@ export default class MyCarsScreen extends Component {
                       subtitle={car.plate}
                     />
                     <Card.Actions>
-                      <Button>Editar</Button>
+                      <Button
+                        onPress={() =>
+                          this.props.navigation.navigate('EditCarScreen', {
+                            car: car,
+                          })
+                        }>
+                        Editar
+                      </Button>
                       <Button
                         color="red"
                         onPress={() =>

@@ -15,6 +15,7 @@ import LastnameChangeScreen from './screens/LastnameChangeScreen';
 import EmailChangeScreen from './screens/EmailChangeScreen';
 import PasswordChangeScreen from './screens/PasswordChangeScreen';
 import CreateCarScreen from './screens/CreateCarScreen.js';
+import EditCarScreen from './screens/EditCarScreen.js';
 var SecurityUtils = require('./utils/SecurityUtils');
 
 const Stack = createStackNavigator();
@@ -137,6 +138,16 @@ export default class App extends Component {
                     options={{
                       headerShown: true,
                       title: 'Añadir un coche',
+                      headerStyle: {backgroundColor: '#12ABE7'},
+                      headerTintColor: '#fff',
+                    }}
+                  />
+                  <Stack.Screen
+                    name="EditCarScreen"
+                    component={EditCarScreen}
+                    options={{
+                      headerShown: true,
+                      title: 'Editar coche',
                       headerStyle: {backgroundColor: '#12ABE7'},
                       headerTintColor: '#fff',
                     }}

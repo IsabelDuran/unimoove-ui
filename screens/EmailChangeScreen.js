@@ -1,7 +1,6 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import ChangeEmailForm from '../components/ChangeEmailForm';
-import ErrorText from '../components/ErrorText';
 import {modifyUserEmail} from '../client/UsersApi';
 var SecurityUtils = require('../utils/SecurityUtils');
 
