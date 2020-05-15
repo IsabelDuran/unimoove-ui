@@ -8,7 +8,7 @@ import {
   Alert,
 } from 'react-native';
 import {Appbar, FAB, Card, Button} from 'react-native-paper';
-import {getUser, getCarsFromUser} from '../client/UsersApi';
+import {getUser, getCarsFromUser, deleteCar} from '../client/UsersApi';
 import LoadingIndicator from '../components/LoadingIndicator';
 import {ScrollView} from 'react-native-gesture-handler';
 var SecurityUtils = require('../utils/SecurityUtils');
@@ -21,6 +21,27 @@ export default class MyCarsScreen extends Component {
       cars: {},
       loading: true,
     };
+    this.deleteCar = this.deleteCar.bind(this);
+    this.handleDeteleCarResponse = this.handleDeteleCarResponse.bind(this);
+    this.fetchUserDataWithCars = this.fetchUserDataWithCars.bind(this);
+  }
+
+  handleDeteleCarResponse(response) {
+    if (response.ok) {
+      console.log('Coche borrado');
+      this.setState({cars: {}});
+      this.fetchUserDataWithCars();
+    } else {
+      console.log('Error');
+    }
+  }
+
+  deleteCar(plate) {
+    this.setState({loading: true});
+    SecurityUtils.authorizeApi(
+      [plate, this.state.user.username],
+      deleteCar,
+    ).then(this.handleDeteleCarResponse);
   }
 
   handleGetUserResponse(response) {
@@ -100,7 +121,28 @@ export default class MyCarsScreen extends Component {
                     />
                     <Card.Actions>
                       <Button>Editar</Button>
-                      <Button color="red">Eliminar</Button>
+                      <Button
+                        color="red"
+                        onPress={() =>
+                          Alert.alert(
+                            'Confirmación',
+                            '¿Está seguro de que quiere borrar el coche? Los coches eliminados no pueden recuperarse.',
+                            [
+                              {
+                                text: 'Cancelar',
+                                onPress: () => console.log('Cancel Pressed'),
+                                style: 'cancel',
+                              },
+                              {
+                                text: 'Si, estoy seguro',
+                                onPress: () => this.deleteCar(car.plate),
+                              },
+                            ],
+                            {cancelable: false},
+                          )
+                        }>
+                        Eliminar
+                      </Button>
                     </Card.Actions>
                   </Card>
                 );

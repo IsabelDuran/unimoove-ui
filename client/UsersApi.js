@@ -99,3 +99,14 @@ export function addCar(carCreationRequest, username, token) {
     body: JSON.stringify(carCreationRequest),
   });
 }
+
+export function deleteCar(plate, username, token) {
+  return fetch(`${BASE_URL}/users/${username}/cars/${plate}`, {
+    method: 'DELETE',
+    headers: new Headers({
+      'content-type': 'application/json',
+      Accept: 'application/json',
+      'X-API-KEY': token,
+    }),
+  });
+}
