@@ -159,11 +159,26 @@ export default class MyCarsScreen extends Component {
           <FAB
             style={styles.fab}
             icon="plus"
-            onPress={() =>
-              this.props.navigation.navigate('CreateCarScreen', {
-                username: this.state.user.username,
-              })
-            }
+            onPress={() => {
+              if (this.state.cars.length === 5) {
+                Alert.alert(
+                  '¡Ups!',
+                  'No puedes añadir más coches porque has llegado al máximo permirtido',
+                  [
+                    {
+                      text: 'Ok',
+                      onPress: () => console.log('Ok Pressed'),
+                      style: 'cancel',
+                    },
+                  ],
+                  {cancelable: false},
+                );
+              } else {
+                this.props.navigation.navigate('CreateCarScreen', {
+                  username: this.state.user.username,
+                });
+              }
+            }}
           />
         </>
       );
