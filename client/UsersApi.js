@@ -110,3 +110,27 @@ export function deleteCar(plate, username, token) {
     }),
   });
 }
+
+export function modifyCarBrand(carBrandChangeRequest, plate, username, token) {
+  return fetch(`${BASE_URL}/users/${username}/cars/${plate}/brand`, {
+    method: 'PUT',
+    headers: new Headers({
+      'content-type': 'application/json',
+      Accept: 'application/json',
+      'X-API-KEY': token,
+    }),
+    body: JSON.stringify(carBrandChangeRequest),
+  });
+}
+
+export function modifyCarModel(carModelChangeRequest, plate, username, token) {
+  return fetch(`${BASE_URL}/users/${username}/cars/${plate}/model`, {
+    method: 'PUT',
+    headers: new Headers({
+      'content-type': 'application/json',
+      Accept: 'application/json',
+      'X-API-KEY': token,
+    }),
+    body: JSON.stringify(carModelChangeRequest),
+  });
+}

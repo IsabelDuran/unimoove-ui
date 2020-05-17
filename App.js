@@ -16,6 +16,8 @@ import EmailChangeScreen from './screens/EmailChangeScreen';
 import PasswordChangeScreen from './screens/PasswordChangeScreen';
 import CreateCarScreen from './screens/CreateCarScreen.js';
 import EditCarScreen from './screens/EditCarScreen.js';
+import BrandChangeScreen from './screens/BrandChangeScreen.js';
+import ModelChangeScreen from './screens/ModelChangeScreen.js';
 var SecurityUtils = require('./utils/SecurityUtils');
 
 const Stack = createStackNavigator();
@@ -40,7 +42,7 @@ export default class App extends Component {
   }
 
   async findExistingToken() {
-  /* SecurityUtils.clearAll().then(
+  /*SecurityUtils.clearAll().then(
       SecurityUtils.getToken().then(this.handleRecieveToken.bind(this)),
     );*/
     SecurityUtils.getToken().then(token =>
@@ -148,6 +150,26 @@ export default class App extends Component {
                     options={{
                       headerShown: true,
                       title: 'Editar coche',
+                      headerStyle: {backgroundColor: '#12ABE7'},
+                      headerTintColor: '#fff',
+                    }}
+                  />
+                  <Stack.Screen
+                    name="BrandChangeScreen"
+                    component={BrandChangeScreen}
+                    options={{
+                      headerShown: true,
+                      title: 'Editar marca',
+                      headerStyle: {backgroundColor: '#12ABE7'},
+                      headerTintColor: '#fff',
+                    }}
+                  />
+                  <Stack.Screen
+                    name="ModelChangeScreen"
+                    component={ModelChangeScreen}
+                    options={{
+                      headerShown: true,
+                      title: 'Editar modelo',
                       headerStyle: {backgroundColor: '#12ABE7'},
                       headerTintColor: '#fff',
                     }}

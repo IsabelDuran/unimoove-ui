@@ -1,13 +1,6 @@
 import React from 'react';
-import {
-  Text,
-  ScrollView,
-  View,
-  Image,
-  StyleSheet,
-  Keyboard,
-} from 'react-native';
-import {TextInput} from 'react-native-paper';
+import {Text, ScrollView, View, Image, StyleSheet} from 'react-native';
+import {Button} from 'react-native-paper';
 export default class EditCarScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -23,39 +16,24 @@ export default class EditCarScreen extends React.Component {
           />
           <Text style={styles.text}>{this.props.route.params.car.plate}</Text>
         </View>
-        <TextInput
-          label="Marca"
-          caretHidden={true}
-          value={this.props.route.params.car.brand}
-          onFocus={() => {
-            Keyboard.dismiss();
-            this.props.navigation.navigate('UsernameChangeScreen', {
+        <Button
+          onPress={() => {
+            this.props.navigation.navigate('BrandChangeScreen', {
               brand: this.props.route.params.car.brand,
+              plate: this.props.route.params.car.plate,
             });
-          }}
-        />
-        <TextInput
-          label="Modelo"
-          caretHidden={true}
-          value={this.props.route.params.car.model}
-          onFocus={() => {
-            Keyboard.dismiss();
-            this.props.navigation.navigate('UsernameChangeScreen', {
+          }}>
+          Modificar Marca
+        </Button>
+        <Button
+          onPress={() => {
+            this.props.navigation.navigate('ModelChangeScreen', {
               model: this.props.route.params.car.model,
+              plate: this.props.route.params.car.plate,
             });
-          }}
-        />
-        <TextInput
-          label="Numero de asientos"
-          caretHidden={true}
-          value={this.props.route.params.car.seats.toString()}
-          onFocus={() => {
-            Keyboard.dismiss();
-            this.props.navigation.navigate('UsernameChangeScreen', {
-              seats: this.props.route.params.car.seats,
-            });
-          }}
-        />
+          }}>
+          Modificar Modelo
+        </Button>
       </ScrollView>
     );
   }
