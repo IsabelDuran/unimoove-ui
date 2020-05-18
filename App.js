@@ -18,6 +18,7 @@ import CreateCarScreen from './screens/CreateCarScreen.js';
 import EditCarScreen from './screens/EditCarScreen.js';
 import BrandChangeScreen from './screens/BrandChangeScreen.js';
 import ModelChangeScreen from './screens/ModelChangeScreen.js';
+import CreateTripScreen from './screens/CreateTripScreen.js';
 var SecurityUtils = require('./utils/SecurityUtils');
 
 const Stack = createStackNavigator();
@@ -170,6 +171,16 @@ export default class App extends Component {
                     options={{
                       headerShown: true,
                       title: 'Editar modelo',
+                      headerStyle: {backgroundColor: '#12ABE7'},
+                      headerTintColor: '#fff',
+                    }}
+                  />
+                  <Stack.Screen
+                    name="CreateTripScreen"
+                    component={CreateTripScreen}
+                    options={{
+                      headerShown: true,
+                      title: 'Añadir un nuevo viaje',
                       headerStyle: {backgroundColor: '#12ABE7'},
                       headerTintColor: '#fff',
                     }}

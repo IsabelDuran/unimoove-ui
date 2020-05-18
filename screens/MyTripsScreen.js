@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {Text, View, StyleSheet, Image} from 'react-native';
-import {Appbar} from 'react-native-paper';
-import {getUser} from '../client/UsersApi';
+import {Text, View, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import {Appbar, FAB} from 'react-native-paper';
+import {getUser, getTripsFromUser} from '../client/UsersApi';
 import LoadingIndicator from '../components/LoadingIndicator';
 import {ScrollView} from 'react-native-gesture-handler';
 var SecurityUtils = require('../utils/SecurityUtils');
@@ -11,15 +11,25 @@ export default class MyTripsScreen extends Component {
     super(props);
     this.state = {
       user: {},
+      trips: {},
       loading: true,
     };
   }
 
-  handleGetUserResponse(response) {
-    response.json().then(data => this.setState({user: data, loading: false}));
+  handleGetTripsResponse(response) {
+    response.json().then(data => this.setState({trips: data, loading: false}));
   }
 
-  fetchUserData() {
+  handleGetUserResponse(response) {
+    response.json().then(data => {
+      this.setState({user: data});
+      SecurityUtils.authorizeApi([data.username], getTripsFromUser).then(
+        this.handleGetTripsResponse.bind(this),
+      );
+    });
+  }
+
+  fetchUserDataWithTrips() {
     this.setState({loading: true});
     SecurityUtils.tokenInfo().then(info => {
       SecurityUtils.authorizeApi([info.sub], getUser).then(
@@ -31,7 +41,7 @@ export default class MyTripsScreen extends Component {
   componentDidMount() {
     this._unsubscribe = this.props.navigation.addListener(
       'focus',
-      this.fetchUserData.bind(this),
+      this.fetchUserDataWithTrips.bind(this),
     );
   }
 
@@ -56,7 +66,37 @@ export default class MyTripsScreen extends Component {
               />
               <Text style={styles.text}>Mis viajes</Text>
             </View>
+            {this.state.trips.paginationInfo.totalElements === 0 ? (
+              <>
+                <View style={styles.container}>
+                  <Text style={styles.label}>
+                    Parece que no has añadido ningún viaje aún
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() =>
+                      this.props.navigation.navigate('CreateTripScreen', {
+                        username: this.state.user.username,
+                      })
+                    }>
+                    <Text style={styles.link}>
+                      ¿Quieres añadir un viaje ahora?
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </>
+            ) : (
+              undefined
+            )}
           </ScrollView>
+          <FAB
+            style={styles.fab}
+            icon="plus"
+            onPress={() => {
+              this.props.navigation.navigate('CreateTripScreen', {
+                username: this.state.user.username,
+              });
+            }}
+          />
         </>
       );
     }
@@ -93,5 +133,20 @@ const styles = StyleSheet.create({
   image: {
     width: 100,
     height: 100,
+  },
+  label: {
+    fontSize: 16,
+    color: '#525252',
+  },
+  link: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#69e000',
+  },
+  fab: {
+    position: 'absolute',
+    margin: 16,
+    right: 0,
+    bottom: 0,
   },
 });

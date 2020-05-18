@@ -15,9 +15,13 @@ export default class CreateCarScreen extends React.Component {
   }
 
   handleCreateNewCarResponse(response) {
-    console.log(JSON.stringify(response));
-    console.log('Coche creado');
-    this.props.navigation.goBack();
+    if (response.ok) {
+      console.log(JSON.stringify(response));
+      console.log('Coche creado');
+      this.props.navigation.goBack();
+    } else {
+      this.setState({isErrorVisible: true});
+    }
   }
 
   createNewCar(carCreationRequest) {

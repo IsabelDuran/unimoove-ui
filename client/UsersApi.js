@@ -134,3 +134,14 @@ export function modifyCarModel(carModelChangeRequest, plate, username, token) {
     body: JSON.stringify(carModelChangeRequest),
   });
 }
+
+export function getTripsFromUser(username, token) {
+  return fetch(`${BASE_URL}/users/${username}/trips`, {
+    method: 'GET',
+    headers: new Headers({
+      'content-type': 'application/json',
+      Accept: 'application/json',
+      'X-API-KEY': token,
+    }),
+  });
+}

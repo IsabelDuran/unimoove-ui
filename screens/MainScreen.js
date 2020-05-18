@@ -68,7 +68,8 @@ export default class MainScreen extends React.Component {
             style={styles.button}
             color="#15abe7"
             mode="contained"
-            dark={true}>
+            dark={true}
+            onPress={() => this.props.navigation.navigate('CreateTripScreen')}>
             ¡Quiero publicar un viaje!
           </Button>
           <Button

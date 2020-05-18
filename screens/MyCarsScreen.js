@@ -46,7 +46,7 @@ export default class MyCarsScreen extends Component {
 
   handleGetUserResponse(response) {
     response.json().then(data => {
-      this.setState({user: data, loading: false});
+      this.setState({user: data});
       SecurityUtils.authorizeApi([data.username], getCarsFromUser).then(
         this.handleGetCarsResponse.bind(this),
       );
@@ -163,7 +163,7 @@ export default class MyCarsScreen extends Component {
               if (this.state.cars.length === 5) {
                 Alert.alert(
                   '¡Ups!',
-                  'No puedes añadir más coches porque has llegado al máximo permirtido',
+                  'No puedes añadir más coches porque has llegado al máximo permitido',
                   [
                     {
                       text: 'Ok',
