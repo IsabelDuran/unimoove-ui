@@ -8,20 +8,20 @@ export default class DateTimeInput extends React.Component {
     super(props);
     this.state = {
       show: false,
-      date: new Date(),
-      textDate: '',
+      time: new Date(),
+      textTime: '',
     };
-    this.setDate = this.setDate.bind(this);
+    this.setTime = this.setTime.bind(this);
   }
 
-  setDate(event, newDate) {
-    if (newDate !== undefined) {
+  setTime(event, newTime) {
+    if (newTime !== undefined) {
       this.setState({
         show: false,
-        date: newDate,
-        textDate: newDate.toISOString().substring(0, '####-##-##'.length),
+        time: newTime.toISOString(),
+        textTime: newTime.toISOString(),
       });
-      this.props.onChange(this.state.textDate);
+      this.props.onChange(this.state.textTime);
     } else this.setState({show: false});
   }
 
@@ -40,11 +40,12 @@ export default class DateTimeInput extends React.Component {
         />
         {this.state.show && (
           <DateTimePicker
+            mode="time"
             testID="dateTimePicker"
             timeZoneOffsetInMinutes={0}
-            value={this.state.date}
+            value={this.state.time}
             display="default"
-            onChange={this.setDate}
+            onChange={this.setTime}
           />
         )}
       </View>

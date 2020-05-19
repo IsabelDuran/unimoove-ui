@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {Dimensions} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
-import { FAB } from 'react-native-paper';
+import {FAB} from 'react-native-paper';
 var screenWidth = Dimensions.get('window').width;
 
 export default class StepForm extends Component {
@@ -22,6 +22,7 @@ export default class StepForm extends Component {
         y: 0,
         animated: true,
       });
+      this.props.onPageChange(this.state.currentPage);
     });
   }
 
@@ -32,6 +33,7 @@ export default class StepForm extends Component {
         y: 0,
         animated: true,
       });
+      this.props.onPageChange(this.state.currentPage);
     });
   }
 
@@ -45,14 +47,38 @@ export default class StepForm extends Component {
           ref={this.scrollView}>
           {this.props.children}
         </ScrollView>
-        <FAB
-          style={styles.fab}
-          icon="arrow-right"
-          disabled={!this.state.departurePlace}
-          onPress={() => {
-            this.scrollView.current.goNext();
-          }}
-        />
+        {this.state.currentPage >= this.props.children.length - 1 ? (
+          <FAB
+            style={styles.fab}
+            icon="send"
+            disabled={this.props.disabledNext}
+            onPress={() => {
+              this.goNext();
+            }}
+          />
+        ) : (
+          <FAB
+            style={styles.fab}
+            icon="arrow-right"
+            disabled={this.props.disabledNext}
+            onPress={() => {
+              this.goNext();
+            }}
+          />
+        )}
+
+        {this.state.currentPage !== 0 ? (
+          <FAB
+            style={styles.fabLeft}
+            icon="arrow-left"
+            disabled={this.props.disabledBack}
+            onPress={() => {
+              this.goBack();
+            }}
+          />
+        ) : (
+          undefined
+        )}
       </>
     );
   }

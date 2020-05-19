@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {Text, View, Dimensions, StyleSheet} from 'react-native';
-import {ScrollView} from 'react-native-gesture-handler';
 import {TextInput, FAB} from 'react-native-paper';
 import DateInput from '../components/DateInput';
-import PresentationalForm from '../components/PresentationalForm';
+import DateTimeInput from '../components/DateTimeInput';
+import PresentationalForm from '../components/StepForm';
 var screenWidth = Dimensions.get('window').width;
 var screenHeight = Dimensions.get('window').height;
 
@@ -11,83 +11,73 @@ export default class CreateTripScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      departurePlace: '',
       arrivalPlace: '',
       departureDateTime: '',
-      departurePlace: '',
       numberAvailableSeats: '',
       price: '',
+      disabledNext: true,
+      departureDate: '',
+      departureTime: '',
     };
     this.scrollView = React.createRef();
   }
 
+  handlePageChange(pageNumber) {
+    let pages = [
+      'departurePlace',
+      'arrivalPlace',
+      'departureDateTime',
+      'numberAvailableSeats',
+      'price',
+    ];
+    this.setState({disabledNext: this.state[pages[pageNumber]].length <= 0});
+  }
+
   render() {
     return (
-      <PresentationalForm ref={this.scrollView}>
+      <PresentationalForm
+        ref={this.scrollView}
+        disabledNext={this.state.disabledNext}
+        onPageChange={this.handlePageChange.bind(this)}>
         <View style={styles.container}>
           <View>
-            <Text style={styles.text}>¿De donde vas a salir?</Text>
+            <Text style={styles.text}>¿De dónde vas a salir?</Text>
             <TextInput
               value={this.state.departurePlace}
               mode="outlined"
               label="Lugar de salida"
-              onChangeText={value => this.setState({departurePlace: value})}
+              onChangeText={value =>
+                this.setState({
+                  departurePlace: value,
+                  disabledNext: value.length <= 0,
+                })
+              }
             />
           </View>
-          <FAB
-            style={styles.fab}
-            icon="arrow-right"
-            disabled={!this.state.departurePlace}
-            onPress={() => {
-              this.scrollView.current.goNext();
-            }}
-          />
         </View>
         <View style={styles.container}>
           <View>
-            <Text style={styles.text}>¿A donde vas?</Text>
+            <Text style={styles.text}>¿A dónde vas?</Text>
             <TextInput
               value={this.state.arrivalPlace}
               mode="outlined"
               label="Lugar de llegada"
-              onChangeText={value => this.setState({arrivalPlace: value})}
+              onChangeText={value =>
+                this.setState({
+                  arrivalPlace: value,
+                  disabledNext: value.length <= 0,
+                })
+              }
             />
           </View>
-          <FAB
-            style={styles.fab}
-            icon="arrow-right"
-            disabled={!this.state.arrivalPlace}
-            onPress={() => {
-              this.scrollView.current.goNext();
-            }}
-          />
-          <FAB
-            style={styles.fabLeft}
-            icon="arrow-left"
-            onPress={() => {
-              this.scrollView.current.goBack();
-            }}
-          />
         </View>
         <View style={styles.container}>
           <View>
             <Text style={styles.text}>¿Cuando sales?</Text>
-            <DateInput />
+            <DateInput label="Día de salida" />
+            <DateTimeInput label="Hora de salida" />
           </View>
-          <FAB
-            style={styles.fab}
-            icon="arrow-right"
-            disabled={!this.state.arrivalPlace}
-            onPress={() => {
-              this.scrollView.current.goNext();
-            }}
-          />
-          <FAB
-            style={styles.fabLeft}
-            icon="arrow-left"
-            onPress={() => {
-              this.scrollView.current.goBack();
-            }}
-          />
         </View>
 
         <View style={styles.container}>
@@ -95,6 +85,9 @@ export default class CreateTripScreen extends Component {
         </View>
         <View style={styles.container}>
           <Text>PANTALLA 5</Text>
+        </View>
+        <View style={styles.container}>
+          <Text>¿TE GUSTAN LOS DATOS DE TU VAIJE?</Text>
         </View>
       </PresentationalForm>
     );
