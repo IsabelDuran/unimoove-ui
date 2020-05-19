@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
 import {Text, View, Dimensions, StyleSheet} from 'react-native';
-import {TextInput, FAB} from 'react-native-paper';
+import {TextInput} from 'react-native-paper';
 import DateInput from '../components/DateInput';
-import DateTimeInput from '../components/DateTimeInput';
+import DateTimeInput from '../components/TimeInput';
 import PresentationalForm from '../components/StepForm';
 var screenWidth = Dimensions.get('window').width;
-var screenHeight = Dimensions.get('window').height;
 
 export default class CreateTripScreen extends Component {
   constructor(props) {
@@ -23,11 +22,27 @@ export default class CreateTripScreen extends Component {
     this.scrollView = React.createRef();
   }
 
+  setDate = sentDate => {
+    this.setState({
+      departureDate: sentDate,
+      disabledNext: this.state.departureDate.length > 0,
+    });
+  };
+
+  setTime = sentTime => {
+    console.log(sentTime);
+    this.setState({
+      departureTime: sentTime,
+      disabledNext: this.state.departureTime.length > 0,
+    });
+  };
+
   handlePageChange(pageNumber) {
     let pages = [
       'departurePlace',
       'arrivalPlace',
-      'departureDateTime',
+      'departureDate',
+      'departureTime',
       'numberAvailableSeats',
       'price',
     ];
@@ -74,17 +89,52 @@ export default class CreateTripScreen extends Component {
         </View>
         <View style={styles.container}>
           <View>
-            <Text style={styles.text}>¿Cuando sales?</Text>
-            <DateInput label="Día de salida" />
-            <DateTimeInput label="Hora de salida" />
+            <Text style={styles.text}>¿Qué día sales?</Text>
+            <DateInput label="Día de salida" onChange={this.setDate} />
+          </View>
+        </View>
+        <View style={styles.container}>
+          <View>
+            <Text style={styles.text}>¿A que hora sales?</Text>
+            <DateTimeInput label="Hora de salida" onChange={this.setTime} />
           </View>
         </View>
 
         <View style={styles.container}>
-          <Text>PANTALLA 4</Text>
+          <View>
+            <Text style={styles.text}>
+              ¿Cuántos asientos tienes disponibles?
+            </Text>
+            <TextInput
+              value={this.state.numberAvailableSeats}
+              mode="outlined"
+              label="Número de asientos"
+              onChangeText={value =>
+                this.setState({
+                  numberAvailableSeats: value,
+                  disabledNext: value.length <= 0,
+                })
+              }
+            />
+          </View>
         </View>
         <View style={styles.container}>
-          <Text>PANTALLA 5</Text>
+          <View>
+            <Text style={styles.text}>
+              ¿Cúanto quieres cobrar por tu viaje?
+            </Text>
+            <TextInput
+              value={this.state.price}
+              mode="outlined"
+              label="Precio"
+              onChangeText={value =>
+                this.setState({
+                  price: value,
+                  disabledNext: value.length <= 0,
+                })
+              }
+            />
+          </View>
         </View>
         <View style={styles.container}>
           <Text>¿TE GUSTAN LOS DATOS DE TU VAIJE?</Text>
