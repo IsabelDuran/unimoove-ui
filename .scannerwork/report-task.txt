@@ -1,0 +1,6 @@
+projectKey=com.unimoove
+serverUrl=http://localhost:9000
+serverVersion=8.3.1.34397
+dashboardUrl=http://localhost:9000/dashboard?id=com.unimoove
+ceTaskId=AXJBFHMc9CSm_5h6twIz
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AXJBFHMc9CSm_5h6twIz

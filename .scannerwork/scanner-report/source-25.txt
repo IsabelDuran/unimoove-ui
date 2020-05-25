@@ -3,7 +3,7 @@ import {View, Keyboard} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {TextInput} from 'react-native-paper';
 
-export default class TimeInput extends React.Component {
+export default class DateInput extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -19,9 +19,9 @@ export default class TimeInput extends React.Component {
       this.setState({
         show: false,
         date: newDate,
-        textDate: newDate.toISOString().substring(11, 16),
+        textDate: newDate.toISOString().substring(0, '####-##-##'.length),
       });
-      this.props.onChange(newDate.toISOString().substring(10, newDate.length));
+      this.props.onChange(this.state.textDate);
     } else this.setState({show: false});
   }
 
@@ -40,8 +40,8 @@ export default class TimeInput extends React.Component {
         />
         {this.state.show && (
           <DateTimePicker
-            mode="time"
             testID="dateTimePicker"
+            timeZoneOffsetInMinutes={0}
             value={this.state.date}
             display="default"
             onChange={this.setDate}

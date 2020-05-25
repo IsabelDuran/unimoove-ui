@@ -1,11 +1,9 @@
 import React, {Component} from 'react';
 import {Text, View, Dimensions, StyleSheet} from 'react-native';
 import {TextInput} from 'react-native-paper';
-import {addTrip} from '../client/TripsApi';
 import DateInput from '../components/DateInput';
 import DateTimeInput from '../components/TimeInput';
 import PresentationalForm from '../components/StepForm';
-var SecurityUtils = require('../utils/SecurityUtils');
 var screenWidth = Dimensions.get('window').width;
 
 export default class CreateTripScreen extends Component {
@@ -22,7 +20,6 @@ export default class CreateTripScreen extends Component {
       departureTime: '',
     };
     this.scrollView = React.createRef();
-    this.createTrip = this.createTrip.bind(this);
   }
 
   setDate = sentDate => {
@@ -33,36 +30,12 @@ export default class CreateTripScreen extends Component {
   };
 
   setTime = sentTime => {
+    console.log(sentTime);
     this.setState({
       departureTime: sentTime,
       disabledNext: this.state.departureTime.length > 0,
     });
   };
-
-  handleCreateNewTripResponse(response) {
-    if (response.ok) {
-      console.log('Viaje Creado');
-      this.props.navigation.goBack();
-    } else {
-      console.log(JSON.stringify(response));
-    }
-  }
-
-  createTrip() {
-    let dateTime = this.state.departureDate + this.state.departureTime;
-
-    let tripCreationRequest = {
-      arrivalPlace: this.state.arrivalPlace,
-      departureDateTime: dateTime,
-      departurePlace: this.state.departurePlace,
-      numberAvailableSeats: this.state.numberAvailableSeats,
-      price: this.state.price,
-    };
-    console.log(JSON.stringify(tripCreationRequest));
-    SecurityUtils.authorizeApi([tripCreationRequest], addTrip).then(
-      this.handleCreateNewTripResponse.bind(this),
-    );
-  }
 
   handlePageChange(pageNumber) {
     let pages = [
@@ -72,10 +45,8 @@ export default class CreateTripScreen extends Component {
       'departureTime',
       'numberAvailableSeats',
       'price',
-      'infoPage',
     ];
-    if (pages[pageNumber] !== 'infoPage')
-      this.setState({disabledNext: this.state[pages[pageNumber]].length <= 0});
+    this.setState({disabledNext: this.state[pages[pageNumber]].length <= 0});
   }
 
   render() {
@@ -83,8 +54,7 @@ export default class CreateTripScreen extends Component {
       <PresentationalForm
         ref={this.scrollView}
         disabledNext={this.state.disabledNext}
-        onPageChange={this.handlePageChange.bind(this)}
-        handleSend={this.createTrip}>
+        onPageChange={this.handlePageChange.bind(this)}>
         <View style={styles.container}>
           <View>
             <Text style={styles.text}>¿De dónde vas a salir?</Text>
@@ -167,21 +137,7 @@ export default class CreateTripScreen extends Component {
           </View>
         </View>
         <View style={styles.container}>
-          <Text style={styles.text}>Datos de tu viaje</Text>
-          <Text style={styles.title}>Lugar de salida</Text>
-          <Text style={styles.infoText}>{this.state.departurePlace}</Text>
-          <Text style={styles.title}>Lugar de llegada</Text>
-          <Text style={styles.infoText}>{this.state.arrivalPlace}</Text>
-          <Text style={styles.title}>Día de salida</Text>
-          <Text style={styles.infoText}>{this.state.departureDate}</Text>
-          <Text style={styles.title}>Hora de salida</Text>
-          <Text style={styles.infoText}>
-            {this.state.departureTime.substring(1, 6)}
-          </Text>
-          <Text style={styles.title}>Número de asientos disponibles</Text>
-          <Text style={styles.infoText}>{this.state.numberAvailableSeats}</Text>
-          <Text style={styles.title}>Precio</Text>
-          <Text style={styles.infoText}>{this.state.price + '€'}</Text>
+          <Text>¿TE GUSTAN LOS DATOS DE TU VAIJE?</Text>
         </View>
       </PresentationalForm>
     );
@@ -200,18 +156,7 @@ const styles = StyleSheet.create({
     fontFamily: 'OpenSans-Bold',
     color: '#69e000',
     fontSize: 20,
-    marginBottom: 24,
-  },
-  title: {
-    fontFamily: 'OpenSans-Regular',
-    color: '#12abe7',
-    fontSize: 20,
-    marginBottom: 5,
-  },
-  infoText: {
-    fontFamily: 'OpenSans-Regular',
-    fontSize: 16,
-    color: '#525252',
+    marginBottom: 20,
   },
   fab: {
     position: 'absolute',

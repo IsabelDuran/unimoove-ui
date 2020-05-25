@@ -42,6 +42,7 @@ export default class TimeInput extends React.Component {
           <DateTimePicker
             mode="time"
             testID="dateTimePicker"
+            timeZoneOffsetInMinutes={0}
             value={this.state.date}
             display="default"
             onChange={this.setDate}
