@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Text, View, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import {Appbar, FAB} from 'react-native-paper';
-import {getUser, getTripsFromUser} from '../client/UsersApi';
+import {Appbar, FAB, Card, Button} from 'react-native-paper';
+import {getUser, getPaginatedTripsFromUser} from '../client/UsersApi';
 import LoadingIndicator from '../components/LoadingIndicator';
 import {ScrollView} from 'react-native-gesture-handler';
 var SecurityUtils = require('../utils/SecurityUtils');
@@ -13,7 +13,13 @@ export default class MyTripsScreen extends Component {
       user: {},
       trips: {},
       loading: true,
+      page: 0,
     };
+  }
+
+  showMoreTrips() {
+    this.state.page++;
+    this.fetchUserDataWithTrips();
   }
 
   handleGetTripsResponse(response) {
@@ -23,9 +29,10 @@ export default class MyTripsScreen extends Component {
   handleGetUserResponse(response) {
     response.json().then(data => {
       this.setState({user: data});
-      SecurityUtils.authorizeApi([data.username], getTripsFromUser).then(
-        this.handleGetTripsResponse.bind(this),
-      );
+      SecurityUtils.authorizeApi(
+        [this.state.page, 5, data.username],
+        getPaginatedTripsFromUser,
+      ).then(this.handleGetTripsResponse.bind(this));
     });
   }
 
@@ -85,8 +92,22 @@ export default class MyTripsScreen extends Component {
                 </View>
               </>
             ) : (
-              undefined
+              this.state.trips.pages.map(trip => {
+                return (
+                  <Card key={trip.departureDateTime}>
+                    <Card.Content>
+                      <Text>De: {trip.departurePlace}</Text>
+                      <Text>A: {trip.arrivalPlace}</Text>
+                    </Card.Content>
+                    <Card.Actions>
+                      <Button>Editar viaje</Button>
+                      <Button color="red">Eliminar</Button>
+                    </Card.Actions>
+                  </Card>
+                );
+              })
             )}
+            <Button onPress={this.showMoreTrips.bind(this)}>MOSTRAR MÁS</Button>
           </ScrollView>
           <FAB
             style={styles.fab}

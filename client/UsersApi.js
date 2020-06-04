@@ -1,5 +1,5 @@
 const PORT = '8080';
-const BASE_URL = `http://192.168.1.56:${PORT}`;
+const BASE_URL = `http://192.168.1.59:${PORT}`;
 
 export function addUser(userRegistrationRequest) {
   return fetch(`${BASE_URL}/users`, {
@@ -144,4 +144,17 @@ export function getTripsFromUser(username, token) {
       'X-API-KEY': token,
     }),
   });
+}
+export function getPaginatedTripsFromUser(page, size, username, token) {
+  return fetch(
+    `${BASE_URL}/users/${username}/trips?page=${page}&size=${size}`,
+    {
+      method: 'GET',
+      headers: new Headers({
+        'content-type': 'application/json',
+        Accept: 'application/json',
+        'X-API-KEY': token,
+      }),
+    },
+  );
 }
