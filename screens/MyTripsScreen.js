@@ -11,19 +11,28 @@ export default class MyTripsScreen extends Component {
     super(props);
     this.state = {
       user: {},
-      trips: {},
+      trips: [],
+      paginationInfo: {},
       loading: true,
       page: 0,
     };
   }
 
   showMoreTrips() {
-    this.state.page++;
-    this.fetchUserDataWithTrips();
+    this.setState({page: this.state.page + 1}, () =>
+      this.fetchUserDataWithTrips(),
+    );
   }
 
   handleGetTripsResponse(response) {
-    response.json().then(data => this.setState({trips: data, loading: false}));
+    response.json().then(data =>
+      this.setState({
+        trips: this.state.trips.concat(data.pages),
+        paginationInfo: data.paginationInfo,
+        loading: false,
+      }),
+    );
+    console.log(JSON.stringify(this.state.trips));
   }
 
   handleGetUserResponse(response) {
@@ -37,7 +46,6 @@ export default class MyTripsScreen extends Component {
   }
 
   fetchUserDataWithTrips() {
-    this.setState({loading: true});
     SecurityUtils.tokenInfo().then(info => {
       SecurityUtils.authorizeApi([info.sub], getUser).then(
         this.handleGetUserResponse.bind(this),
@@ -73,7 +81,7 @@ export default class MyTripsScreen extends Component {
               />
               <Text style={styles.text}>Mis viajes</Text>
             </View>
-            {this.state.trips.paginationInfo.totalElements === 0 ? (
+            {this.state.paginationInfo.totalElements === 0 ? (
               <>
                 <View style={styles.container}>
                   <Text style={styles.label}>
@@ -92,7 +100,7 @@ export default class MyTripsScreen extends Component {
                 </View>
               </>
             ) : (
-              this.state.trips.pages.map(trip => {
+              this.state.trips.map(trip => {
                 return (
                   <Card key={trip.departureDateTime}>
                     <Card.Content>
@@ -107,7 +115,14 @@ export default class MyTripsScreen extends Component {
                 );
               })
             )}
-            <Button onPress={this.showMoreTrips.bind(this)}>MOSTRAR MÁS</Button>
+            {this.state.page !== this.state.paginationInfo.totalPages - 1 &&
+            this.state.paginationInfo.totalElements !== 0 ? (
+              <Button onPress={this.showMoreTrips.bind(this)}>
+                MOSTRAR MÁS
+              </Button>
+            ) : (
+              undefined
+            )}
           </ScrollView>
           <FAB
             style={styles.fab}
