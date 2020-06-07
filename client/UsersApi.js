@@ -158,3 +158,17 @@ export function getPaginatedTripsFromUser(page, size, username, token) {
     },
   );
 }
+
+export function getReservationsFromUser(page, size, username, token) {
+  return fetch(
+    `${BASE_URL}/users/${username}/reservations?page=${page}&size=${size}`,
+    {
+      method: 'GET',
+      headers: new Headers({
+        'content-type': 'application/json',
+        Accept: 'application/json',
+        'X-API-KEY': token,
+      }),
+    },
+  );
+}

@@ -32,7 +32,6 @@ export default class MyTripsScreen extends Component {
         loading: false,
       }),
     );
-    console.log(JSON.stringify(this.state.trips));
   }
 
   handleGetUserResponse(response) {
@@ -104,8 +103,12 @@ export default class MyTripsScreen extends Component {
                 return (
                   <Card key={trip.departureDateTime}>
                     <Card.Content>
-                      <Text>De: {trip.departurePlace}</Text>
-                      <Text>A: {trip.arrivalPlace}</Text>
+                      <Text style={styles.tripInfo}>
+                        De: {trip.departurePlace}
+                      </Text>
+                      <Text style={styles.tripInfo}>
+                        A: {trip.arrivalPlace}
+                      </Text>
                     </Card.Content>
                     <Card.Actions>
                       <Button>Editar viaje</Button>
@@ -184,5 +187,10 @@ const styles = StyleSheet.create({
     margin: 16,
     right: 0,
     bottom: 0,
+  },
+  tripInfo: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#69e000',
   },
 });

@@ -76,7 +76,8 @@ export default class MainScreen extends React.Component {
             style={styles.button}
             mode="contained"
             dark={true}
-            color="#69e000">
+            color="#69e000"
+            onPress={() => this.props.navigation.navigate('SearchTripScreen')}>
             Estoy buscando un viaje
           </Button>
         </View>

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {Text, View, StyleSheet, Image} from 'react-native';
+import {Text, View, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {Appbar} from 'react-native-paper';
-import {getUser} from '../client/UsersApi';
+import {getUser, getReservationsFromUser} from '../client/UsersApi';
 import LoadingIndicator from '../components/LoadingIndicator';
 import {ScrollView} from 'react-native-gesture-handler';
 var SecurityUtils = require('../utils/SecurityUtils');
@@ -11,12 +11,35 @@ export default class MyReservationsScreen extends Component {
     super(props);
     this.state = {
       user: {},
+      reservations: [],
+      paginationInfo: {},
       loading: true,
+      page: 0,
     };
   }
 
+  showMoreReservations() {
+    this.setState({page: this.state.page + 1}, () => this.fetchUserData());
+  }
+
+  handleGetReservationsResponse(response) {
+    response.json().then(data =>
+      this.setState({
+        reservations: this.state.reservations.concat(data.pages),
+        paginationInfo: data.paginationInfo,
+        loading: false,
+      }),
+    );
+  }
+
   handleGetUserResponse(response) {
-    response.json().then(data => this.setState({user: data, loading: false}));
+    response.json().then(data => {
+      this.setState({user: data});
+      SecurityUtils.authorizeApi(
+        [this.state.page, 5, data.username],
+        getReservationsFromUser,
+      ).then(this.handleGetReservationsResponse.bind(this));
+    });
   }
 
   fetchUserData() {
@@ -56,6 +79,27 @@ export default class MyReservationsScreen extends Component {
               />
               <Text style={styles.text}>Mis reservas</Text>
             </View>
+            {this.state.paginationInfo.totalElements === 0 ? (
+              <>
+                <View style={styles.container}>
+                  <Text style={styles.label}>
+                    Parece que no has reservado ningún viaje aún
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() =>
+                      this.props.navigation.navigate('SearchTripScreen', {
+                        username: this.state.user.username,
+                      })
+                    }>
+                    <Text style={styles.link}>
+                      ¿Por qué no buscas algún viaje?
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </>
+            ) : (
+              undefined
+            )}
           </ScrollView>
         </>
       );
@@ -93,5 +137,14 @@ const styles = StyleSheet.create({
   image: {
     width: 100,
     height: 100,
+  },
+  label: {
+    fontSize: 16,
+    color: '#525252',
+  },
+  link: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#69e000',
   },
 });
