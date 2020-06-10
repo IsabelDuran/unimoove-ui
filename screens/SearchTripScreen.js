@@ -16,7 +16,16 @@ export default class SearchTripScreen extends Component {
   }
 
   handleSearchTripResponse(response) {
-    console.log(JSON.stringify(response));
+    if (response.ok) {
+      response.json().then(data => {
+        this.props.navigation.navigate('SearchedTripsScreen', {
+          trips: data.pages,
+          paginationInfo: data.paginationInfo,
+        });
+      });
+    } else {
+      console.log(JSON.stringify(response));
+    }
   }
 
   searchTrips(searchParameters) {
