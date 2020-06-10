@@ -7,19 +7,44 @@ import TimeInput from '../components/TimeInput';
 export default class SearchTripForm extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      departurePlace: '',
+      arrivalPlace: '',
+      departureDate: '',
+      departureTime: '',
+    };
   }
+
+  setDate = sentDate => {
+    this.setState({departureDate: sentDate});
+  };
+
+  setTime = sentTime => {
+    this.setState({departureTime: sentTime});
+  };
+
   render() {
     return (
       <View style={styles.container} behavior="padding">
         <Text style={styles.text}>¿De dónde quieres salir?</Text>
-        <TextInput mode="outlined" />
+        <TextInput
+          mode="outlined"
+          onChangeText={value => this.setState({departurePlace: value})}
+        />
         <Text style={styles.text}>¿A dónde quieres ir?</Text>
-        <TextInput mode="outlined" />
+        <TextInput
+          mode="outlined"
+          onChangeText={value => this.setState({arrivalPlace: value})}
+        />
         <Text style={styles.text}>¿Qué día quieres salir?</Text>
-        <DateInput />
+        <DateInput onChange={this.setDate} />
         <Text style={styles.text}>¿A que hora quieres salir?</Text>
-        <TimeInput />
-        <Button style={styles.button} mode="contained" dark={true}>
+        <TimeInput onChange={this.setTime} />
+        <Button
+          style={styles.button}
+          mode="contained"
+          dark={true}
+          onPress={() => this.props.handlePress(this.state)}>
           Buscar
         </Button>
       </View>
