@@ -10,6 +10,8 @@ export default class SearchTripScreen extends Component {
     super(props);
     this.state = {
       user: {},
+      departurePlace: '',
+      arrivalPlace: '',
     };
     this.fetchUserData = this.fetchUserData.bind(this);
     this.searchTrips = this.searchTrips.bind(this);
@@ -21,6 +23,8 @@ export default class SearchTripScreen extends Component {
         this.props.navigation.navigate('SearchedTripsScreen', {
           trips: data.pages,
           paginationInfo: data.paginationInfo,
+          departurePlace: this.state.departurePlace,
+          arrivalPlace: this.state.arrivalPlace,
         });
       });
     } else {
@@ -29,6 +33,10 @@ export default class SearchTripScreen extends Component {
   }
 
   searchTrips(searchParameters) {
+    this.setState({
+      departurePlace: searchParameters.departurePlace,
+      arrivalPlace: searchParameters.arrivalPlace,
+    });
     let dateTime =
       searchParameters.departureDate + searchParameters.departureTime;
     SecurityUtils.tokenInfo().then(info => {
