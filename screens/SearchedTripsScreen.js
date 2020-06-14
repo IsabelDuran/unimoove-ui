@@ -74,6 +74,9 @@ export default class SearchTripScreen extends Component {
                 <Card.Content>
                   <Text style={styles.tripInfo}>De: {trip.departurePlace}</Text>
                   <Text style={styles.tripInfo}>A: {trip.arrivalPlace}</Text>
+                  <Text style={styles.tripInfo}>
+                    Hora: {trip.departureDateTime}
+                  </Text>
                 </Card.Content>
                 <Card.Actions>
                   <Button onPress={() => this.reservateTrip(trip.id)}>

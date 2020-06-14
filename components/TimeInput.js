@@ -14,7 +14,14 @@ export default class TimeInput extends React.Component {
     this.setDate = this.setDate.bind(this);
   }
 
+  convertUTCToLocaleTimezone(date) {
+    let offset = new Date().getTimezoneOffset() * 60000;
+    return new Date(date - offset);
+  }
+
   setDate(event, newDate) {
+    /* This is to convert the date to the current timezone */
+    newDate = this.convertUTCToLocaleTimezone(newDate);
     if (newDate !== undefined) {
       this.setState({
         show: false,
