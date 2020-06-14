@@ -45,7 +45,7 @@ export default class SearchTripScreen extends Component {
       <ScrollView style={styles.background}>
         {this.state.paginationInfo.totalElements !== 0 ? (
           <Text style={styles.headerText}>
-            Viaje de{' '}
+            Viajes de{' '}
             <Text style={styles.departureText}>
               {this.state.departurePlace}
             </Text>{' '}

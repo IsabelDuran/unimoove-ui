@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Text, View, StyleSheet, Keyboard, Image} from 'react-native';
-import {Appbar, Button, TextInput} from 'react-native-paper';
+import {Appbar, Button, TextInput, List} from 'react-native-paper';
 import {getUser} from '../client/UsersApi';
 import LoadingIndicator from '../components/LoadingIndicator';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -57,56 +57,46 @@ export default class MyProfile extends Component {
               <Text style={styles.text}>Mi Perfil</Text>
             </View>
             <Text style={styles.informativeText}>Información de mi cuenta</Text>
-            <TextInput
-              label="Nombre de usuario"
-              caretHidden={true}
-              value={this.state.user.username}
-              onFocus={() => {
-                Keyboard.dismiss();
+            <List.Item
+              title="Nombre de usuario"
+              description={this.state.user.username}
+              onPress={() => {
                 this.props.navigation.navigate('UsernameChangeScreen', {
                   username: this.state.user.username,
                 });
               }}
             />
-            <TextInput
-              label="Nombre"
-              caretHidden={true}
-              value={this.state.user.name}
-              onFocus={() => {
-                Keyboard.dismiss();
+            <List.Item
+              title="Nombre"
+              description={this.state.user.name}
+              onPress={() => {
                 this.props.navigation.navigate('NameChangeScreen', {
                   name: this.state.user.name,
                 });
               }}
             />
-            <TextInput
-              label="Apellidos"
-              caretHidden={true}
-              value={this.state.user.lastname}
-              onFocus={() => {
-                Keyboard.dismiss();
+            <List.Item
+              title="Apellidos"
+              description={this.state.user.lastname}
+              onPress={() => {
                 this.props.navigation.navigate('LastnameChangeScreen', {
                   lastname: this.state.user.lastname,
                 });
               }}
             />
-            <TextInput
-              label="Email"
-              caretHidden={true}
-              value={this.state.user.email}
-              onFocus={() => {
-                Keyboard.dismiss();
+            <List.Item
+              title="Email"
+              description={this.state.user.email}
+              onPress={() => {
                 this.props.navigation.navigate('EmailChangeScreen', {
                   email: this.state.user.email,
                 });
               }}
             />
-            <TextInput
-              label="Contraseña"
-              caretHidden={true}
-              value="***********"
-              onFocus={() => {
-                Keyboard.dismiss();
+            <List.Item
+              title="Contraseña"
+              description="***********"
+              onPress={() => {
                 this.props.navigation.navigate('PasswordChangeScreen');
               }}
             />
