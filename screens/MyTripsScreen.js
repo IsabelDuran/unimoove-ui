@@ -57,6 +57,10 @@ export default class MyTripsScreen extends Component {
       'focus',
       this.fetchUserDataWithTrips.bind(this),
     );
+
+    this._outOfFocus = this.props.navigation.addListener('blur', () =>
+      this.setState({trips: [], page: 0}),
+    );
   }
 
   componentWillUnmount() {
@@ -101,7 +105,7 @@ export default class MyTripsScreen extends Component {
             ) : (
               this.state.trips.map(trip => {
                 return (
-                  <Card key={trip.departureDateTime}>
+                  <Card key={trip.id}>
                     <Card.Content>
                       <Text style={styles.tripInfo}>
                         De: {trip.departurePlace}
