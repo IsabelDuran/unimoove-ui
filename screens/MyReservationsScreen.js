@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Text, View, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import {Appbar} from 'react-native-paper';
+import {Appbar, Button, Card} from 'react-native-paper';
 import {getUser, getReservationsFromUser} from '../client/UsersApi';
 import LoadingIndicator from '../components/LoadingIndicator';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -98,7 +98,23 @@ export default class MyReservationsScreen extends Component {
                 </View>
               </>
             ) : (
-              undefined
+              this.state.reservations.map(reservation => {
+                return (
+                  <Card key={reservation.id}>
+                    <Card.Content>
+                      <Text style={styles.tripInfo}>
+                        De: {reservation.trip.departurePlace}
+                      </Text>
+                      <Text style={styles.tripInfo}>
+                        A: {reservation.trip.arrivalPlace}
+                      </Text>
+                    </Card.Content>
+                    <Card.Actions>
+                      <Button color="red">Eliminar Reserva</Button>
+                    </Card.Actions>
+                  </Card>
+                );
+              })
             )}
           </ScrollView>
         </>
@@ -143,6 +159,11 @@ const styles = StyleSheet.create({
     color: '#525252',
   },
   link: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#69e000',
+  },
+  tripInfo: {
     fontSize: 16,
     fontWeight: 'bold',
     color: '#69e000',
