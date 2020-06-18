@@ -55,6 +55,10 @@ export default class MyReservationsScreen extends Component {
       'focus',
       this.fetchUserData.bind(this),
     );
+
+    this._outOfFocus = this.props.navigation.addListener('blur', () =>
+      this.setState({reservations: [], page: 0}),
+    );
   }
 
   componentWillUnmount() {
