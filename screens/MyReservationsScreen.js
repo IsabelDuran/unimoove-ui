@@ -43,7 +43,6 @@ export default class MyReservationsScreen extends Component {
   }
 
   fetchUserData() {
-    this.setState({loading: true});
     SecurityUtils.tokenInfo().then(info => {
       SecurityUtils.authorizeApi([info.sub], getUser).then(
         this.handleGetUserResponse.bind(this),
@@ -110,11 +109,19 @@ export default class MyReservationsScreen extends Component {
                       </Text>
                     </Card.Content>
                     <Card.Actions>
-                      <Button color="red">Eliminar Reserva</Button>
+                      <Button color="red">Cancelar Reserva</Button>
                     </Card.Actions>
                   </Card>
                 );
               })
+            )}
+            {this.state.page !== this.state.paginationInfo.totalPages - 1 &&
+            this.state.paginationInfo.totalElements !== 0 ? (
+              <Button onPress={this.showMoreReservations.bind(this)}>
+                MOSTRAR MÁS
+              </Button>
+            ) : (
+              undefined
             )}
           </ScrollView>
         </>

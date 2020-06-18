@@ -115,8 +115,7 @@ export default class MyTripsScreen extends Component {
                       </Text>
                     </Card.Content>
                     <Card.Actions>
-                      <Button>Editar viaje</Button>
-                      <Button color="red">Eliminar</Button>
+                      <Button color="red">Cancelar viaje</Button>
                     </Card.Actions>
                   </Card>
                 );
