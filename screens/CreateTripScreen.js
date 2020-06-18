@@ -160,7 +160,7 @@ export default class CreateTripScreen extends Component {
         </View>
         <View style={styles.container}>
           <View>
-            <Text style={styles.text}>¿A que hora sales?</Text>
+            <Text style={styles.text}>¿A qué hora sales?</Text>
             <DateTimeInput label="Hora de salida" onChange={this.setTime} />
           </View>
         </View>
