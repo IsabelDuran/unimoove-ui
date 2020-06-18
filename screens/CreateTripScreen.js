@@ -1,12 +1,31 @@
 import React, {Component} from 'react';
 import {Text, View, Dimensions, StyleSheet} from 'react-native';
-import {TextInput} from 'react-native-paper';
+import {TextInput, HelperText} from 'react-native-paper';
 import {addTrip} from '../client/TripsApi';
 import DateInput from '../components/DateInput';
 import DateTimeInput from '../components/TimeInput';
 import PresentationalForm from '../components/StepForm';
 var SecurityUtils = require('../utils/SecurityUtils');
 var screenWidth = Dimensions.get('window').width;
+var validate = require('validate.js');
+const validation = {
+  price: {
+    format: {
+      pattern: '[0-9]+',
+      flags: 'i',
+      message: 'El precio del viaje debe ser un número',
+    },
+    presence: true,
+  },
+  numberAvailableSeats: {
+    format: {
+      pattern: '[0-9]+',
+      flags: 'i',
+      message: 'El número de asientos debe ser un número',
+    },
+    presence: true,
+  },
+};
 
 export default class CreateTripScreen extends Component {
   constructor(props) {
@@ -23,6 +42,22 @@ export default class CreateTripScreen extends Component {
     };
     this.scrollView = React.createRef();
     this.createTrip = this.createTrip.bind(this);
+  }
+
+  renderHelperText(fieldName) {
+    if (this.state[fieldName].length > 0) {
+      let validationResult = validate.single(
+        this.state[fieldName],
+        validation[fieldName],
+      );
+      if (validationResult !== undefined) {
+        return (
+          <HelperText type="error" padding="none">
+            {validationResult[0]}
+          </HelperText>
+        );
+      }
+    }
   }
 
   setDate = sentDate => {
@@ -139,13 +174,23 @@ export default class CreateTripScreen extends Component {
               value={this.state.numberAvailableSeats}
               mode="outlined"
               label="Número de asientos"
+              error={
+                this.state.numberAvailableSeats.length > 0 &&
+                validate.single(
+                  this.state.numberAvailableSeats,
+                  validation.numberAvailableSeats,
+                )
+              }
               onChangeText={value =>
                 this.setState({
                   numberAvailableSeats: value,
-                  disabledNext: value.length <= 0,
+                  disabledNext:
+                    value.length <= 0 ||
+                    validate.single(value, validation.numberAvailableSeats),
                 })
               }
             />
+            {this.renderHelperText('numberAvailableSeats')}
           </View>
         </View>
         <View style={styles.container}>
@@ -157,13 +202,20 @@ export default class CreateTripScreen extends Component {
               value={this.state.price}
               mode="outlined"
               label="Precio"
+              error={
+                this.state.price.length > 0 &&
+                validate.single(this.state.price, validation.price)
+              }
               onChangeText={value =>
                 this.setState({
                   price: value,
-                  disabledNext: value.length <= 0,
+                  disabledNext:
+                    value.length <= 0 ||
+                    validate.single(value, validation.price),
                 })
               }
             />
+            {this.renderHelperText('price')}
           </View>
         </View>
         <View style={styles.container}>
