@@ -8,6 +8,7 @@ import WelcomeScreen from './screens/WelcomeScreen.js';
 import RegistrationScreen from './screens/RegistrationScreen.js';
 import {DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
 import MainScreen from './screens/MainScreen.js';
+import MyReservationsScreen from './screens/MyReservationsScreen.js';
 import SplashScreen from './screens/SplashScreen';
 import UsernameChangeScreen from './screens/UsernameChangeScreen';
 import NameChangeScreen from './screens/NameChangeScreen';
@@ -85,6 +86,11 @@ export default class App extends Component {
                   <Stack.Screen
                     name="MainScreen"
                     component={MainScreen}
+                    options={{headerShown: false}}
+                  />
+                  <Stack.Screen
+                    name="MyReservationsScreen"
+                    component={MyReservationsScreen}
                     options={{headerShown: false}}
                   />
                   <Stack.Screen

@@ -1,5 +1,5 @@
 const PORT = '8080';
-const BASE_URL = `http://192.168.1.56:${PORT}`;
+const BASE_URL = `http://192.168.1.59:${PORT}`;
 
 export function addTrip(tripCreationRequest, token) {
   return fetch(`${BASE_URL}/trips`, {

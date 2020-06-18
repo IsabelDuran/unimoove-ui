@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from 'react-native';
 import {Card, Button} from 'react-native-paper';
 import {addReservation} from '../client/ReservationsApi';
@@ -26,6 +27,7 @@ export default class SearchTripScreen extends Component {
   handleAddReservationResponse(response) {
     if (response.ok) {
       console.log('Reserva Creada');
+      this.props.navigation.navigate('MyReservationsScreen');
     } else {
       console.log(JSON.stringify(response));
     }
@@ -79,7 +81,25 @@ export default class SearchTripScreen extends Component {
                   </Text>
                 </Card.Content>
                 <Card.Actions>
-                  <Button onPress={() => this.reservateTrip(trip.id)}>
+                  <Button
+                    onPress={() => {
+                      Alert.alert(
+                        'Reservar Viaje',
+                        '¿Estás seguro de que desea reservar el viaje?',
+                        [
+                          {
+                            text: 'Cancelar',
+                            onPress: () => console.log('Cancel Pressed'),
+                            style: 'cancel',
+                          },
+                          {
+                            text: 'Sí',
+                            onPress: () => this.reservateTrip(trip.id),
+                          },
+                        ],
+                        {cancelable: false},
+                      );
+                    }}>
                     Reservar
                   </Button>
                 </Card.Actions>
