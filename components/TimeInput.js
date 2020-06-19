@@ -15,18 +15,19 @@ export default class TimeInput extends React.Component {
   }
 
   convertUTCToLocaleTimezone(date) {
+    /* This is to convert the date to the current timezone */
     let offset = new Date().getTimezoneOffset() * 60000;
     return new Date(date - offset);
   }
 
   setDate(event, newDate) {
-    /* This is to convert the date to the current timezone */
-    newDate = this.convertUTCToLocaleTimezone(newDate);
     if (newDate !== undefined) {
       this.setState({
         show: false,
         date: newDate,
-        textDate: newDate.toISOString().substring(11, 16),
+        textDate: this.convertUTCToLocaleTimezone(newDate)
+          .toISOString()
+          .substring(11, 16),
       });
       this.props.onChange(newDate.toISOString().substring(10, newDate.length));
     } else this.setState({show: false});

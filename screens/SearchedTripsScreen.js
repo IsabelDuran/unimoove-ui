@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import {Card, Button} from 'react-native-paper';
 import {addReservation} from '../client/ReservationsApi';
+import {getUser, getPaginatedTripsFromUser} from '../client/UsersApi';
 var SecurityUtils = require('../utils/SecurityUtils');
 
 export default class SearchTripScreen extends Component {
@@ -20,8 +21,42 @@ export default class SearchTripScreen extends Component {
       paginationInfo: this.props.route.params.paginationInfo,
       departurePlace: this.props.route.params.departurePlace,
       arrivalPlace: this.props.route.params.arrivalPlace,
+      page: 0,
     };
     this.reservateTrip = this.reservateTrip.bind(this);
+  }
+
+  showMoreTrips() {
+    this.setState({page: this.state.page + 1}, () =>
+      this.fetchUserDataWithTrips(),
+    );
+  }
+
+  handleGetTripsResponse(response) {
+    response.json().then(data =>
+      this.setState({
+        trips: this.state.trips.concat(data.pages),
+        paginationInfo: data.paginationInfo,
+        loading: false,
+      }),
+    );
+  }
+
+  handleGetUserResponse(response) {
+    response.json().then(data => {
+      this.setState({user: data});
+      SecurityUtils.authorizeApi(
+        [this.state.page, 5, data.username],
+        getPaginatedTripsFromUser,
+      ).then(this.handleGetTripsResponse.bind(this));
+    });
+  }
+  fetchUserDataWithTrips() {
+    SecurityUtils.tokenInfo().then(info => {
+      SecurityUtils.authorizeApi([info.sub], getUser).then(
+        this.handleGetUserResponse.bind(this),
+      );
+    });
   }
 
   handleAddReservationResponse(response) {
@@ -72,7 +107,7 @@ export default class SearchTripScreen extends Component {
         ) : (
           this.state.trips.map(trip => {
             return (
-              <Card key={trip.departureDateTime}>
+              <Card key={trip.id}>
                 <Card.Content>
                   <Text style={styles.tripInfo}>De: {trip.departurePlace}</Text>
                   <Text style={styles.tripInfo}>A: {trip.arrivalPlace}</Text>
@@ -106,6 +141,12 @@ export default class SearchTripScreen extends Component {
               </Card>
             );
           })
+        )}
+        {this.state.page !== this.state.paginationInfo.totalPages - 1 &&
+        this.state.paginationInfo.totalElements !== 0 ? (
+          <Button onPress={this.showMoreTrips.bind(this)}>MOSTRAR MÁS</Button>
+        ) : (
+          undefined
         )}
       </ScrollView>
     );
