@@ -22,6 +22,7 @@ import ModelChangeScreen from './screens/ModelChangeScreen.js';
 import CreateTripScreen from './screens/CreateTripScreen.js';
 import SearchTripScreen from './screens/SearchTripScreen.js';
 import SearchedTripsScreen from './screens/SearchedTripsScreen.js';
+import ManageReservations from './screens/ManageReservations.js';
 var SecurityUtils = require('./utils/SecurityUtils');
 
 const Stack = createStackNavigator();
@@ -209,6 +210,16 @@ export default class App extends Component {
                     options={{
                       headerShown: true,
                       title: 'Viajes',
+                      headerStyle: {backgroundColor: '#12ABE7'},
+                      headerTintColor: '#fff',
+                    }}
+                  />
+                  <Stack.Screen
+                    name="ManageReservations"
+                    component={ManageReservations}
+                    options={{
+                      headerShown: true,
+                      title: 'Gestionar reservas',
                       headerStyle: {backgroundColor: '#12ABE7'},
                       headerTintColor: '#fff',
                     }}

@@ -1,5 +1,5 @@
 const PORT = '8080';
-const BASE_URL = `http://192.168.1.59:${PORT}`;
+const BASE_URL = `http://192.168.1.56:${PORT}`;
 
 export function addReservation(reservationRequest, token) {
   return fetch(`${BASE_URL}/reservations`, {

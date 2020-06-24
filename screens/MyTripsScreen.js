@@ -115,6 +115,15 @@ export default class MyTripsScreen extends Component {
                       </Text>
                     </Card.Content>
                     <Card.Actions>
+                      <Button
+                        onPress={() =>
+                          this.props.navigation.navigate('ManageReservations', {
+                            trip: trip,
+                            user: this.state.user,
+                          })
+                        }>
+                        Gestionar Reservas
+                      </Button>
                       <Button color="red">Cancelar viaje</Button>
                     </Card.Actions>
                   </Card>

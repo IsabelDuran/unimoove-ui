@@ -6,6 +6,7 @@ import DateInput from '../components/DateInput';
 import DateTimeInput from '../components/TimeInput';
 import PresentationalForm from '../components/StepForm';
 var SecurityUtils = require('../utils/SecurityUtils');
+var LocalTimeUtils = require('../utils/LocalTimeUtils');
 var screenWidth = Dimensions.get('window').width;
 var validate = require('validate.js');
 const validation = {
@@ -228,7 +229,9 @@ export default class CreateTripScreen extends Component {
           <Text style={styles.infoText}>{this.state.departureDate}</Text>
           <Text style={styles.title}>Hora de salida</Text>
           <Text style={styles.infoText}>
-            {this.state.departureTime.substring(1, 6)}
+            {LocalTimeUtils.convertUTCToLocaleTimezone(
+              this.state.departureTime,
+            ).substring(1, 6)}
           </Text>
           <Text style={styles.title}>Número de asientos disponibles</Text>
           <Text style={styles.infoText}>{this.state.numberAvailableSeats}</Text>

@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Keyboard} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {TextInput} from 'react-native-paper';
+var LocalTimeUtils = require('../utils/LocalTimeUtils');
 
 export default class TimeInput extends React.Component {
   constructor(props) {
@@ -14,18 +15,12 @@ export default class TimeInput extends React.Component {
     this.setDate = this.setDate.bind(this);
   }
 
-  convertUTCToLocaleTimezone(date) {
-    /* This is to convert the date to the current timezone */
-    let offset = new Date().getTimezoneOffset() * 60000;
-    return new Date(date - offset);
-  }
-
   setDate(event, newDate) {
     if (newDate !== undefined) {
       this.setState({
         show: false,
         date: newDate,
-        textDate: this.convertUTCToLocaleTimezone(newDate)
+        textDate: LocalTimeUtils.convertUTCToLocaleTimezone(newDate)
           .toISOString()
           .substring(11, 16),
       });

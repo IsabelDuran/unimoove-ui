@@ -106,13 +106,17 @@ export default class SearchTripScreen extends Component {
           </View>
         ) : (
           this.state.trips.map(trip => {
+            console.log(JSON.stringify(trip));
             return (
               <Card key={trip.id}>
                 <Card.Content>
                   <Text style={styles.tripInfo}>De: {trip.departurePlace}</Text>
                   <Text style={styles.tripInfo}>A: {trip.arrivalPlace}</Text>
                   <Text style={styles.tripInfo}>
-                    Hora: {trip.departureDateTime}
+                    Hora:{' '}
+                    {new Date(
+                      Date.parse(trip.departureDateTime),
+                    ).toLocaleString()}
                   </Text>
                 </Card.Content>
                 <Card.Actions>
