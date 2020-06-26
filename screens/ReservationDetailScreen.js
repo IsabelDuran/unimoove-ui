@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Text, View, StyleSheet, Image} from 'react-native';
-import {Card, Button} from 'react-native-paper';
+import {Card, Button, Divider} from 'react-native-paper';
 import {searchTripReservations} from '../client/TripsApi';
 import {ScrollView} from 'react-native-gesture-handler';
 var SecurityUtils = require('../utils/SecurityUtils');
@@ -15,6 +15,49 @@ export default class ReservationDetailScreen extends Component {
     };
   }
 
+  renderStatusTextColor() {
+    let color;
+    switch (this.state.reservation.status) {
+      case 0:
+        color = '#12ABE7';
+        break;
+      case 1:
+        color = '#69e000';
+        break;
+      case 2:
+        color = 'red';
+        break;
+      case 3:
+        color = 'red';
+        break;
+      case 4:
+        color = '#12ABE7';
+        break;
+    }
+    return color;
+  }
+  renderStatusText() {
+    let message;
+    switch (this.state.reservation.status) {
+      case 0:
+        message = 'PENDIENTE DE ACEPTACIÓN';
+        break;
+      case 1:
+        message = 'ACEPTADA';
+        break;
+      case 2:
+        message = 'DENEGADA';
+        break;
+      case 3:
+        message = 'CANCELADA';
+        break;
+      case 4:
+        message = 'PASADA';
+        break;
+    }
+    return message;
+  }
+
   render() {
     return (
       <ScrollView>
@@ -23,8 +66,66 @@ export default class ReservationDetailScreen extends Component {
             source={require('../assets/img/fullcar.png')}
             style={styles.image}
           />
-          <Text style={styles.text}>Datos de mi reserva</Text>
+          <Text style={styles.headerText}>Datos de mi reserva</Text>
         </View>
+        <Text style={styles.text}>
+          Estado de mi reserva:{'\n'}
+          <Text style={{color: this.renderStatusTextColor()}}>
+            {this.renderStatusText()}
+          </Text>
+        </Text>
+        <Divider />
+        <Text style={styles.text}>
+          Fecha de realización de la reserva:{'\n'}
+          <Text style={{color: this.renderStatusTextColor()}}>
+            {LocalTimeUtils.beautifulyDateTime(
+              this.state.reservation.dateTimeReservation,
+            )}
+          </Text>
+        </Text>
+        <Divider />
+        <Text style={styles.text}>
+          Salida de:{'\n'}
+          <Text style={{color: this.renderStatusTextColor()}}>
+            {this.state.reservation.trip.departurePlace}
+          </Text>
+        </Text>
+        <Divider />
+        <Text style={styles.text}>
+          Llegada a:{'\n'}
+          <Text style={{color: this.renderStatusTextColor()}}>
+            {this.state.reservation.trip.arrivalPlace}
+          </Text>
+        </Text>
+        <Divider />
+        <Text style={styles.text}>
+          Día y hora de salida:{'\n'}
+          <Text style={{color: this.renderStatusTextColor()}}>
+            {LocalTimeUtils.beautifulyDateTime(
+              this.state.reservation.trip.departureDateTime,
+            )}
+          </Text>
+        </Text>
+        <Divider />
+        <Text style={styles.text}>
+          Precio:{'\n'}
+          <Text style={{color: this.renderStatusTextColor()}}>
+            {this.state.reservation.trip.price + '€'}
+          </Text>
+        </Text>
+        <Divider />
+        <Text style={styles.text}>
+          Viaje creado por:{'\n'}
+          <Text style={{color: this.renderStatusTextColor()}}>
+            {this.state.reservation.user.name +
+              ' ' +
+              this.state.reservation.user.lastname}
+          </Text>
+        </Text>
+        <Divider />
+        <Button style={styles.button} color="red">
+          Cancelar reserva
+        </Button>
       </ScrollView>
     );
   }
@@ -39,14 +140,27 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'center',
   },
-  text: {
+  headerText: {
     fontFamily: 'OpenSans-Bold',
     color: '#69e000',
     fontSize: 20,
     marginTop: 5,
   },
+  text: {
+    fontFamily: 'OpenSans-SemiBold',
+    color: '#2D383E',
+    fontSize: 17,
+    marginTop: 5,
+    marginLeft: 10,
+  },
   image: {
     width: 100,
     height: 100,
+  },
+  button: {
+    padding: 10,
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
   },
 });
