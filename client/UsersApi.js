@@ -1,5 +1,5 @@
 const PORT = '8080';
-const BASE_URL = `http://192.168.1.56:${PORT}`;
+const BASE_URL = `http://192.168.1.59:${PORT}`;
 
 export function addUser(userRegistrationRequest) {
   return fetch(`${BASE_URL}/users`, {

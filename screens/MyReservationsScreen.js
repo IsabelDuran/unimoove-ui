@@ -113,6 +113,17 @@ export default class MyReservationsScreen extends Component {
                       </Text>
                     </Card.Content>
                     <Card.Actions>
+                      <Button
+                        onPress={() =>
+                          this.props.navigation.navigate(
+                            'ReservationDetailScreen', {
+                              reservation: reservation,
+                              user: this.state.user,
+                            }
+                          )
+                        }>
+                        Detalles
+                      </Button>
                       <Button color="red">Cancelar Reserva</Button>
                     </Card.Actions>
                   </Card>

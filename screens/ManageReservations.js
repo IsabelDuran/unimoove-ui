@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {Text, View, StyleSheet, Image} from 'react-native';
 import {Card, Button} from 'react-native-paper';
 import {searchTripReservations} from '../client/TripsApi';
-import LoadingIndicator from '../components/LoadingIndicator';
 import {ScrollView} from 'react-native-gesture-handler';
 var SecurityUtils = require('../utils/SecurityUtils');
 var LocalTimeUtils = require('../utils/LocalTimeUtils');
