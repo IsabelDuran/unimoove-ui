@@ -13,7 +13,7 @@ import {addReservation} from '../client/ReservationsApi';
 import {getUser, getPaginatedTripsFromUser} from '../client/UsersApi';
 var SecurityUtils = require('../utils/SecurityUtils');
 
-export default class SearchTripScreen extends Component {
+export default class SearchedTripScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {

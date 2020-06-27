@@ -40,18 +40,14 @@ export default class RegistrationForm extends React.Component {
   }
 
   isFormIncompleteOrIncorrect() {
-    if (
+    return (
       validate(this.state, validation) !== undefined ||
       !this.state.name ||
       !this.state.lastname ||
       !this.state.password ||
       !this.state.passwordRepeat ||
       !this.state.birthdate
-    ) {
-      return true;
-    } else {
-      return false;
-    }
+    );
   }
 
   setPassword = sentPasswords => {

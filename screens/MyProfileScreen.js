@@ -6,7 +6,7 @@ import LoadingIndicator from '../components/LoadingIndicator';
 import {ScrollView} from 'react-native-gesture-handler';
 var SecurityUtils = require('../utils/SecurityUtils');
 
-export default class MyProfile extends Component {
+export default class MyProfileScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {

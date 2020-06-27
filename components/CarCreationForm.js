@@ -32,17 +32,13 @@ export default class CarCreationForm extends React.Component {
   }
 
   isFormIncompleteOrIncorrect() {
-    if (
+    return (
       validate(this.state, validation) !== undefined ||
       !this.state.brand ||
       !this.state.model ||
       !this.state.plate ||
       !this.state.seats
-    ) {
-      return true;
-    } else {
-      return false;
-    }
+    );
   }
 
   renderHelperText(fieldName) {

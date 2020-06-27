@@ -10,11 +10,7 @@ export default class PasswordInput extends React.Component {
   }
 
   passwordIsEqual() {
-    if (this.state.password == this.state.passwordRepeat) {
-      return true;
-    } else {
-      return false;
-    }
+    return this.state.password === this.state.passwordRepeat;
   }
 
   render() {
