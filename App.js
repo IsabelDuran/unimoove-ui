@@ -24,6 +24,7 @@ import SearchTripScreen from './screens/SearchTripScreen.js';
 import SearchedTripsScreen from './screens/SearchedTripsScreen.js';
 import ManageReservations from './screens/ManageReservations.js';
 import ReservationDetailScreen from './screens/ReservationDetailScreen.js';
+import TripDetailScreen from './screens/TripDetailScreen.js';
 var SecurityUtils = require('./utils/SecurityUtils');
 
 const Stack = createStackNavigator();
@@ -231,6 +232,16 @@ export default class App extends Component {
                     options={{
                       headerShown: true,
                       title: 'Información de tu reserva',
+                      headerStyle: {backgroundColor: '#12ABE7'},
+                      headerTintColor: '#fff',
+                    }}
+                  />
+                  <Stack.Screen
+                    name="TripDetailScreen"
+                    component={TripDetailScreen}
+                    options={{
+                      headerShown: true,
+                      title: 'Información de tu viaje',
                       headerStyle: {backgroundColor: '#12ABE7'},
                       headerTintColor: '#fff',
                     }}

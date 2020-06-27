@@ -144,7 +144,15 @@ export default class MyTripsScreen extends Component {
                       <Text>Estado: {trip.state}</Text>
                     </Card.Content>
                     <Card.Actions>
-                      <Button>Detalles</Button>
+                      <Button
+                        onPress={() =>
+                          this.props.navigation.navigate('TripDetailScreen', {
+                            trip: trip,
+                            user: this.state.user,
+                          })
+                        }>
+                        Detalles
+                      </Button>
                       {trip.state <= 1 ? (
                         <Button
                           onPress={() =>

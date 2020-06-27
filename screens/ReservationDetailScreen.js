@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
 import {Text, View, StyleSheet, Image} from 'react-native';
-import {Card, Button, Divider} from 'react-native-paper';
-import {searchTripReservations} from '../client/TripsApi';
+import {Button, Divider} from 'react-native-paper';
 import {ScrollView} from 'react-native-gesture-handler';
-var SecurityUtils = require('../utils/SecurityUtils');
 var LocalTimeUtils = require('../utils/LocalTimeUtils');
 
 export default class ReservationDetailScreen extends Component {
