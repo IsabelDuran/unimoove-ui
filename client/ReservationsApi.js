@@ -12,3 +12,19 @@ export function addReservation(reservationRequest, token) {
     body: JSON.stringify(reservationRequest),
   });
 }
+
+export function modifyReservationState(
+  reservationStateChangeRequest,
+  idReservation,
+  token,
+) {
+  return fetch(`${BASE_URL}/reservations/${idReservation}/state`, {
+    method: 'PUT',
+    headers: new Headers({
+      'content-type': 'application/json',
+      Accept: 'application/json',
+      'X-API-KEY': token,
+    }),
+    body: JSON.stringify(reservationStateChangeRequest),
+  });
+}

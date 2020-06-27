@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
-import {Text, View, StyleSheet, Image} from 'react-native';
+import {Text, View, StyleSheet, Image, Alert} from 'react-native';
 import {Button, Divider} from 'react-native-paper';
 import {ScrollView} from 'react-native-gesture-handler';
+import {modifyReservationState} from '../client/ReservationsApi';
 var LocalTimeUtils = require('../utils/LocalTimeUtils');
+var SecurityUtils = require('../utils/SecurityUtils');
 
 export default class ReservationDetailScreen extends Component {
   constructor(props) {
@@ -11,6 +13,25 @@ export default class ReservationDetailScreen extends Component {
       user: this.props.route.params.user,
       reservation: this.props.route.params.reservation,
     };
+    this.cancelReservation = this.cancelReservation.bind(this);
+  }
+
+  handleCancelReservation(response) {
+    if (response.ok) {
+      this.props.navigation.goBack();
+    } else {
+      console.logÇ(JSON.stringify(response));
+    }
+  }
+
+  cancelReservation(idReservation) {
+    let reservationStateChangeRequest = {
+      newState: 3,
+    };
+    SecurityUtils.authorizeApi(
+      [reservationStateChangeRequest, idReservation],
+      modifyReservationState,
+    ).then(this.handleCancelReservation.bind(this));
   }
 
   renderStatusTextColor() {
@@ -121,8 +142,28 @@ export default class ReservationDetailScreen extends Component {
           </Text>
         </Text>
         <Divider />
-        {this.state.reservation.status !== 3 ? (
-          <Button style={styles.button} color="red">
+        {this.state.reservation.status < 2 ? (
+          <Button
+            style={styles.button}
+            color="red"
+            onPress={() => {
+              Alert.alert(
+                'Cancelar reserva',
+                '¿Estás seguro de que desea cancelar la reserva?',
+                [
+                  {
+                    text: 'No',
+                    style: 'cancel',
+                  },
+                  {
+                    text: 'Sí',
+                    onPress: () =>
+                      this.cancelReservation(this.state.reservation.id),
+                  },
+                ],
+                {cancelable: false},
+              );
+            }}>
             Cancelar reserva
           </Button>
         ) : (

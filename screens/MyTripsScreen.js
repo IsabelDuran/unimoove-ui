@@ -29,7 +29,8 @@ export default class MyTripsScreen extends Component {
 
   handleCancelTripResponse(response) {
     if (response.ok) {
-      console.log('Viaje cancelado');
+      this.setState({trips: [], page: 0});
+      this.fetchUserDataWithTrips();
     } else {
       console.log(JSON.stringify(response));
     }
