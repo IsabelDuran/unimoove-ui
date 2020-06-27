@@ -144,36 +144,49 @@ export default class MyTripsScreen extends Component {
                       <Text>Estado: {trip.state}</Text>
                     </Card.Content>
                     <Card.Actions>
-                      <Button
-                        onPress={() =>
-                          this.props.navigation.navigate('ManageReservations', {
-                            trip: trip,
-                            user: this.state.user,
-                          })
-                        }>
-                        Gestionar Reservas
-                      </Button>
-                      <Button
-                        color="red"
-                        onPress={() => {
-                          Alert.alert(
-                            'Cancelar Viaje',
-                            '¿Estás seguro de que desea cancelar el viaje?',
-                            [
+                      <Button>Detalles</Button>
+                      {trip.state <= 1 ? (
+                        <Button
+                          onPress={() =>
+                            this.props.navigation.navigate(
+                              'ManageReservations',
                               {
-                                text: 'No',
-                                style: 'cancel',
+                                trip: trip,
+                                user: this.state.user,
                               },
-                              {
-                                text: 'Sí',
-                                onPress: () => this.cancelTrip(trip.id),
-                              },
-                            ],
-                            {cancelable: false},
-                          );
-                        }}>
-                        Cancelar viaje
-                      </Button>
+                            )
+                          }>
+                          Reservas
+                        </Button>
+                      ) : (
+                        undefined
+                      )}
+
+                      {trip.state <= 1 ? (
+                        <Button
+                          color="red"
+                          onPress={() => {
+                            Alert.alert(
+                              'Cancelar Viaje',
+                              '¿Estás seguro de que desea cancelar el viaje?',
+                              [
+                                {
+                                  text: 'No',
+                                  style: 'cancel',
+                                },
+                                {
+                                  text: 'Sí',
+                                  onPress: () => this.cancelTrip(trip.id),
+                                },
+                              ],
+                              {cancelable: false},
+                            );
+                          }}>
+                          Cancelar viaje
+                        </Button>
+                      ) : (
+                        undefined
+                      )}
                     </Card.Actions>
                   </Card>
                 );

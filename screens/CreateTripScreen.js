@@ -227,23 +227,18 @@ export default class CreateTripScreen extends Component {
           <Text style={styles.infoText}>{this.state.departurePlace}</Text>
           <Divider />
           <Text style={styles.title}>Lugar de llegada</Text>
-          <Divider />
           <Text style={styles.infoText}>{this.state.arrivalPlace}</Text>
           <Divider />
           <Text style={styles.title}>Día de salida</Text>
-          <Divider />
           <Text style={styles.infoText}>{this.state.departureDate}</Text>
           <Divider />
           <Text style={styles.title}>Hora de salida</Text>
-          <Divider />
           <Text style={styles.infoText}>{this.state.departureTime}</Text>
           <Divider />
           <Text style={styles.title}>Número de asientos disponibles</Text>
-          <Divider />
           <Text style={styles.infoText}>{this.state.numberAvailableSeats}</Text>
           <Divider />
           <Text style={styles.title}>Precio</Text>
-          <Divider />
           <Text style={styles.infoText}>{this.state.price + '€'}</Text>
         </View>
       </PresentationalForm>
