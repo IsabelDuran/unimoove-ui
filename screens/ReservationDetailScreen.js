@@ -123,9 +123,13 @@ export default class ReservationDetailScreen extends Component {
           </Text>
         </Text>
         <Divider />
-        <Button style={styles.button} color="red">
-          Cancelar reserva
-        </Button>
+        {this.state.reservation.status !== 3 ? (
+          <Button style={styles.button} color="red">
+            Cancelar reserva
+          </Button>
+        ) : (
+          undefined
+        )}
       </ScrollView>
     );
   }

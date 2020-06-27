@@ -1,7 +1,15 @@
 import React, {Component} from 'react';
-import {Text, View, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import {Appbar, FAB, Card, Button} from 'react-native-paper';
 import {getUser, getPaginatedTripsFromUser} from '../client/UsersApi';
+import {modifyTripState} from '../client/TripsApi';
 import LoadingIndicator from '../components/LoadingIndicator';
 import {ScrollView} from 'react-native-gesture-handler';
 var SecurityUtils = require('../utils/SecurityUtils');
@@ -16,6 +24,26 @@ export default class MyTripsScreen extends Component {
       loading: true,
       page: 0,
     };
+    this.cancelTrip = this.cancelTrip.bind(this);
+  }
+
+  handleCancelTripResponse(response) {
+    if (response.ok) {
+      console.log('Viaje cancelado');
+    } else {
+      console.log(JSON.stringify(response));
+    }
+  }
+
+  cancelTrip(idTrip) {
+    let tripStateChangeRequest = {
+      newStatus: 2,
+    };
+
+    SecurityUtils.authorizeApi(
+      [tripStateChangeRequest, idTrip],
+      modifyTripState,
+    ).then(this.handleCancelTripResponse.bind(this));
   }
 
   showMoreTrips() {
@@ -113,6 +141,7 @@ export default class MyTripsScreen extends Component {
                       <Text style={styles.tripInfo}>
                         A: {trip.arrivalPlace}
                       </Text>
+                      <Text>Estado: {trip.state}</Text>
                     </Card.Content>
                     <Card.Actions>
                       <Button
@@ -124,7 +153,27 @@ export default class MyTripsScreen extends Component {
                         }>
                         Gestionar Reservas
                       </Button>
-                      <Button color="red">Cancelar viaje</Button>
+                      <Button
+                        color="red"
+                        onPress={() => {
+                          Alert.alert(
+                            'Cancelar Viaje',
+                            '¿Estás seguro de que desea cancelar el viaje?',
+                            [
+                              {
+                                text: 'No',
+                                style: 'cancel',
+                              },
+                              {
+                                text: 'Sí',
+                                onPress: () => this.cancelTrip(trip.id),
+                              },
+                            ],
+                            {cancelable: false},
+                          );
+                        }}>
+                        Cancelar viaje
+                      </Button>
                     </Card.Actions>
                   </Card>
                 );

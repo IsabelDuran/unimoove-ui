@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Text, View, Dimensions, StyleSheet} from 'react-native';
-import {TextInput, HelperText} from 'react-native-paper';
+import {TextInput, HelperText, Divider} from 'react-native-paper';
 import {addTrip} from '../client/TripsApi';
 import DateInput from '../components/DateInput';
 import DateTimeInput from '../components/TimeInput';
@@ -110,8 +110,9 @@ export default class CreateTripScreen extends Component {
       'price',
       'infoPage',
     ];
-    if (pages[pageNumber] !== 'infoPage')
+    if (pages[pageNumber] !== 'infoPage') {
       this.setState({disabledNext: this.state[pages[pageNumber]].length <= 0});
+    }
   }
 
   render() {
@@ -221,21 +222,28 @@ export default class CreateTripScreen extends Component {
         </View>
         <View style={styles.container}>
           <Text style={styles.text}>Datos de tu viaje</Text>
+          <Divider />
           <Text style={styles.title}>Lugar de salida</Text>
           <Text style={styles.infoText}>{this.state.departurePlace}</Text>
+          <Divider />
           <Text style={styles.title}>Lugar de llegada</Text>
+          <Divider />
           <Text style={styles.infoText}>{this.state.arrivalPlace}</Text>
+          <Divider />
           <Text style={styles.title}>Día de salida</Text>
+          <Divider />
           <Text style={styles.infoText}>{this.state.departureDate}</Text>
+          <Divider />
           <Text style={styles.title}>Hora de salida</Text>
-          <Text style={styles.infoText}>
-            {LocalTimeUtils.convertUTCToLocaleTimezone(
-              this.state.departureTime,
-            ).substring(1, 6)}
-          </Text>
+          <Divider />
+          <Text style={styles.infoText}>{this.state.departureTime}</Text>
+          <Divider />
           <Text style={styles.title}>Número de asientos disponibles</Text>
+          <Divider />
           <Text style={styles.infoText}>{this.state.numberAvailableSeats}</Text>
+          <Divider />
           <Text style={styles.title}>Precio</Text>
+          <Divider />
           <Text style={styles.infoText}>{this.state.price + '€'}</Text>
         </View>
       </PresentationalForm>

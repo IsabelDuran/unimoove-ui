@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {Text, View, StyleSheet, Keyboard, Image} from 'react-native';
-import {Appbar, Button, TextInput, List} from 'react-native-paper';
+import {Text, View, StyleSheet, Image} from 'react-native';
+import {Appbar, Button, List} from 'react-native-paper';
 import {getUser} from '../client/UsersApi';
 import LoadingIndicator from '../components/LoadingIndicator';
 import {ScrollView} from 'react-native-gesture-handler';

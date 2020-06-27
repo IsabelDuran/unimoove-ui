@@ -47,3 +47,15 @@ export function searchTripReservations(idTrip, page, size, token) {
     },
   );
 }
+
+export function modifyTripState(tripStateChangeRequest, idTrip, token) {
+  return fetch(`${BASE_URL}/trips/${idTrip}/status`, {
+    method: 'PUT',
+    headers: new Headers({
+      'content-type': 'application/json',
+      Accept: 'application/json',
+      'X-API-KEY': token,
+    }),
+    body: JSON.stringify(tripStateChangeRequest),
+  });
+}

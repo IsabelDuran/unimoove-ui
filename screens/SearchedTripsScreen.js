@@ -106,44 +106,47 @@ export default class SearchTripScreen extends Component {
           </View>
         ) : (
           this.state.trips.map(trip => {
-            console.log(JSON.stringify(trip));
-            return (
-              <Card key={trip.id}>
-                <Card.Content>
-                  <Text style={styles.tripInfo}>De: {trip.departurePlace}</Text>
-                  <Text style={styles.tripInfo}>A: {trip.arrivalPlace}</Text>
-                  <Text style={styles.tripInfo}>
-                    Hora:{' '}
-                    {new Date(
-                      Date.parse(trip.departureDateTime),
-                    ).toLocaleString()}
-                  </Text>
-                </Card.Content>
-                <Card.Actions>
-                  <Button
-                    onPress={() => {
-                      Alert.alert(
-                        'Reservar Viaje',
-                        '¿Estás seguro de que desea reservar el viaje?',
-                        [
-                          {
-                            text: 'Cancelar',
-                            onPress: () => console.log('Cancel Pressed'),
-                            style: 'cancel',
-                          },
-                          {
-                            text: 'Sí',
-                            onPress: () => this.reservateTrip(trip.id),
-                          },
-                        ],
-                        {cancelable: false},
-                      );
-                    }}>
-                    Reservar
-                  </Button>
-                </Card.Actions>
-              </Card>
-            );
+            if (trip.state === 0) {
+              return (
+                <Card key={trip.id}>
+                  <Card.Content>
+                    <Text style={styles.tripInfo}>
+                      De: {trip.departurePlace}
+                    </Text>
+                    <Text style={styles.tripInfo}>A: {trip.arrivalPlace}</Text>
+                    <Text style={styles.tripInfo}>
+                      Hora:{' '}
+                      {new Date(
+                        Date.parse(trip.departureDateTime),
+                      ).toLocaleString()}
+                    </Text>
+                  </Card.Content>
+                  <Card.Actions>
+                    <Button
+                      onPress={() => {
+                        Alert.alert(
+                          'Reservar Viaje',
+                          '¿Estás seguro de que desea reservar el viaje?',
+                          [
+                            {
+                              text: 'Cancelar',
+                              onPress: () => console.log('Cancel Pressed'),
+                              style: 'cancel',
+                            },
+                            {
+                              text: 'Sí',
+                              onPress: () => this.reservateTrip(trip.id),
+                            },
+                          ],
+                          {cancelable: false},
+                        );
+                      }}>
+                      Reservar
+                    </Button>
+                  </Card.Actions>
+                </Card>
+              );
+            }
           })
         )}
         {this.state.page !== this.state.paginationInfo.totalPages - 1 &&
