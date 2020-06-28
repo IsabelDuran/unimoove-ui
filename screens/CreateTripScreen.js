@@ -6,7 +6,6 @@ import DateInput from '../components/DateInput';
 import DateTimeInput from '../components/TimeInput';
 import PresentationalForm from '../components/StepForm';
 var SecurityUtils = require('../utils/SecurityUtils');
-var LocalTimeUtils = require('../utils/LocalTimeUtils');
 var screenWidth = Dimensions.get('window').width;
 var validate = require('validate.js');
 const validation = {

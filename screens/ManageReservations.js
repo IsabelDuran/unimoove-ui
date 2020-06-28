@@ -1,10 +1,14 @@
 import React, {Component} from 'react';
-import {Text, View, StyleSheet, Image} from 'react-native';
+import {Text, View, StyleSheet, Image, Alert} from 'react-native';
 import {Card, Button} from 'react-native-paper';
+import {modifyReservationState} from '../client/ReservationsApi';
 import {searchTripReservations} from '../client/TripsApi';
 import {ScrollView} from 'react-native-gesture-handler';
 var SecurityUtils = require('../utils/SecurityUtils');
 var LocalTimeUtils = require('../utils/LocalTimeUtils');
+
+const STATE_DENIED = 2;
+const STATE_ACCEPTED = 1;
 
 export default class ManageReservations extends Component {
   constructor(props) {
@@ -15,6 +19,26 @@ export default class ManageReservations extends Component {
       reservations: [],
       paginationInfo: {},
     };
+    this.manageReservation = this.manageReservation.bind(this);
+  }
+
+  handleManageReservation(response) {
+    if (response.ok) {
+      this.setState({reservations: [], page: 0});
+      this.fetchTripReservations();
+    } else {
+      console.log(JSON.stringify(response));
+    }
+  }
+
+  manageReservation(idReservation, value) {
+    let reservationStateChangeRequest = {
+      newState: value,
+    };
+    SecurityUtils.authorizeApi(
+      [reservationStateChangeRequest, idReservation],
+      modifyReservationState,
+    ).then(this.handleManageReservation.bind(this));
   }
 
   handleGetTripReservationsResponse(response) {
@@ -94,11 +118,63 @@ export default class ManageReservations extends Component {
                     Reservado por:{' '}
                     {reservation.user.name + ' ' + reservation.user.lastname}
                   </Text>
+                  <Text>Estado: {reservation.state}</Text>
                 </Card.Content>
-                <Card.Actions>
-                  <Button>Aceptar reserva</Button>
-                  <Button color="red">Rechazar reserva</Button>
-                </Card.Actions>
+                {reservation.state === 0 ? (
+                  <Card.Actions>
+                    <Button
+                      onPress={() => {
+                        Alert.alert(
+                          'Aceptar reserva',
+                          '¿Estás seguro de que desea aceptar la reserva?',
+                          [
+                            {
+                              text: 'No',
+                              style: 'cancel',
+                            },
+                            {
+                              text: 'Sí',
+                              onPress: () =>
+                                this.manageReservation(
+                                  reservation.id,
+                                  STATE_ACCEPTED,
+                                ),
+                            },
+                          ],
+                          {cancelable: false},
+                        );
+                      }}>
+                      Aceptar reserva
+                    </Button>
+                    <Button
+                      onPress={() => {
+                        Alert.alert(
+                          'Rechazar reserva',
+                          '¿Estás seguro de que desea rechazar la reserva?',
+                          [
+                            {
+                              text: 'No',
+                              style: 'cancel',
+                            },
+                            {
+                              text: 'Sí',
+                              onPress: () =>
+                                this.manageReservation(
+                                  reservation.id,
+                                  STATE_DENIED,
+                                ),
+                            },
+                          ],
+                          {cancelable: false},
+                        );
+                      }}
+                      color="red">
+                      Rechazar reserva
+                    </Button>
+                  </Card.Actions>
+                ) : (
+                  undefined
+                )}
               </Card>
             );
           })
