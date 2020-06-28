@@ -1,6 +1,6 @@
 import React from 'react';
 import {Text, ScrollView, View, Image, StyleSheet} from 'react-native';
-import {Button} from 'react-native-paper';
+import {Button, List} from 'react-native-paper';
 export default class EditCarScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -16,24 +16,26 @@ export default class EditCarScreen extends React.Component {
           />
           <Text style={styles.text}>{this.props.route.params.car.plate}</Text>
         </View>
-        <Button
+        <List.Item
+          title="Modificar Marca"
+          description={this.props.route.params.car.plate}
           onPress={() => {
             this.props.navigation.navigate('BrandChangeScreen', {
               brand: this.props.route.params.car.brand,
               plate: this.props.route.params.car.plate,
             });
-          }}>
-          Modificar Marca
-        </Button>
-        <Button
+          }}
+        />
+        <List.Item
+          title="Modificar Modelo"
+          description={this.props.route.params.car.model}
           onPress={() => {
             this.props.navigation.navigate('ModelChangeScreen', {
               model: this.props.route.params.car.model,
               plate: this.props.route.params.car.plate,
             });
-          }}>
-          Modificar Modelo
-        </Button>
+          }}
+        />
       </ScrollView>
     );
   }
