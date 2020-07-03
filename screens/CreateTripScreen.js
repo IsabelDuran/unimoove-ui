@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
-import {Text, View, Dimensions, StyleSheet} from 'react-native';
+import {Text, View, Dimensions, StyleSheet, Alert} from 'react-native';
 import {TextInput, HelperText, Divider} from 'react-native-paper';
 import {addTrip} from '../client/TripsApi';
 import DateInput from '../components/DateInput';
 import DateTimeInput from '../components/TimeInput';
+import CarList from '../components/CarList';
 import PresentationalForm from '../components/StepForm';
 var SecurityUtils = require('../utils/SecurityUtils');
 var screenWidth = Dimensions.get('window').width;
@@ -39,6 +40,7 @@ export default class CreateTripScreen extends Component {
       disabledNext: true,
       departureDate: '',
       departureTime: '',
+      car: {},
     };
     this.scrollView = React.createRef();
     this.createTrip = this.createTrip.bind(this);
@@ -74,6 +76,10 @@ export default class CreateTripScreen extends Component {
     });
   };
 
+  setCar = sentCar => {
+    this.setState({car: sentCar, disabledNext: false});
+  };
+
   handleCreateNewTripResponse(response) {
     if (response.ok) {
       console.log('Viaje Creado');
@@ -84,18 +90,46 @@ export default class CreateTripScreen extends Component {
   }
 
   createTrip() {
-    let dateTime = this.state.departureDate + this.state.departureTime;
+    Alert.alert(
+      '¿Quieres publicar tu viaje?',
+      'No podrás modificar los datos de tu viaje pero puedes cancelarlo.',
+      [
+        {
+          text: 'No',
+          style: 'cancel',
+        },
+        {
+          text: 'Sí',
+          onPress: () => {
+            let dateTime = this.state.departureDate + this.state.departureTime;
+            let tripCreationRequest;
 
-    let tripCreationRequest = {
-      arrivalPlace: this.state.arrivalPlace,
-      departureDateTime: dateTime,
-      departurePlace: this.state.departurePlace,
-      numberAvailableSeats: this.state.numberAvailableSeats,
-      price: this.state.price,
-    };
-    console.log(JSON.stringify(tripCreationRequest));
-    SecurityUtils.authorizeApi([tripCreationRequest], addTrip).then(
-      this.handleCreateNewTripResponse.bind(this),
+            if (this.state.car === undefined) {
+              tripCreationRequest = {
+                arrivalPlace: this.state.arrivalPlace,
+                departureDateTime: dateTime,
+                departurePlace: this.state.departurePlace,
+                numberAvailableSeats: this.state.numberAvailableSeats,
+                price: this.state.price,
+              };
+            } else {
+              tripCreationRequest = {
+                arrivalPlace: this.state.arrivalPlace,
+                departureDateTime: dateTime,
+                departurePlace: this.state.departurePlace,
+                numberAvailableSeats: this.state.numberAvailableSeats,
+                idCar: this.state.car.id,
+                price: this.state.price,
+              };
+            }
+
+            SecurityUtils.authorizeApi([tripCreationRequest], addTrip).then(
+              this.handleCreateNewTripResponse.bind(this),
+            );
+          },
+        },
+      ],
+      {cancelable: false},
     );
   }
 
@@ -107,10 +141,14 @@ export default class CreateTripScreen extends Component {
       'departureTime',
       'numberAvailableSeats',
       'price',
+      'car',
       'infoPage',
     ];
     if (pages[pageNumber] !== 'infoPage') {
       this.setState({disabledNext: this.state[pages[pageNumber]].length <= 0});
+    }
+    if (pages[pageNumber] === 'car') {
+      this.setState({disabledNext: true});
     }
   }
 
@@ -220,6 +258,18 @@ export default class CreateTripScreen extends Component {
           </View>
         </View>
         <View style={styles.container}>
+          <View>
+            <Text style={styles.text}>
+              ¿Quieres añadir uno de tus coches al viaje?
+            </Text>
+            <CarList handlePress={this.setCar} />
+            <HelperText visible={true}>
+              Ningún usuario verá los datos de tu coche hasta que hayas aceptado
+              el viaje.
+            </HelperText>
+          </View>
+        </View>
+        <View style={styles.container}>
           <Text style={styles.text}>Datos de tu viaje</Text>
           <Divider />
           <Text style={styles.title}>Lugar de salida</Text>
@@ -239,6 +289,17 @@ export default class CreateTripScreen extends Component {
           <Divider />
           <Text style={styles.title}>Precio</Text>
           <Text style={styles.infoText}>{this.state.price + '€'}</Text>
+          {this.state.car !== undefined ? (
+            <>
+              <Divider />
+              <Text style={styles.title}>Coche</Text>
+              <Text style={styles.infoText}>
+                {this.state.car.brand + ' ' + this.state.car.model}
+              </Text>
+            </>
+          ) : (
+            undefined
+          )}
         </View>
       </PresentationalForm>
     );

@@ -71,6 +71,7 @@ export default class MyReservationsScreen extends Component {
   }
 
   fetchUserData() {
+    if (this.state.page === 0) this.setState({loading: true});
     SecurityUtils.tokenInfo().then(info => {
       SecurityUtils.authorizeApi([info.sub], getUser).then(
         this.handleGetUserResponse.bind(this),
