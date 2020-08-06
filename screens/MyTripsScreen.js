@@ -27,6 +27,25 @@ export default class MyTripsScreen extends Component {
     this.cancelTrip = this.cancelTrip.bind(this);
   }
 
+  renderStatusText(state) {
+    let message;
+    switch (state) {
+      case 0:
+        message = 'LIBRE';
+        break;
+      case 1:
+        message = 'LLENO';
+        break;
+      case 2:
+        message = 'CANCELADO';
+        break;
+      case 3:
+        message = 'PASADO';
+        break;
+    }
+    return message;
+  }
+
   handleCancelTripResponse(response) {
     if (response.ok) {
       this.setState({trips: [], page: 0});
@@ -143,7 +162,7 @@ export default class MyTripsScreen extends Component {
                       <Text style={styles.tripInfo}>
                         A: {trip.arrivalPlace}
                       </Text>
-                      <Text>Estado: {trip.state}</Text>
+                      <Text style={styles.tripInfo}>Estado: {this.renderStatusText(trip.state)}</Text>
                     </Card.Content>
                     <Card.Actions>
                       <Button
@@ -275,6 +294,6 @@ const styles = StyleSheet.create({
   tripInfo: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#69e000',
+    color: '#333333',
   },
 });

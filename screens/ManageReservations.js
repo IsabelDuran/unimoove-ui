@@ -22,6 +22,25 @@ export default class ManageReservations extends Component {
     this.manageReservation = this.manageReservation.bind(this);
   }
 
+  renderStatusText(state) {
+    let message;
+    switch (state) {
+      case 0:
+        message = 'LIBRE';
+        break;
+      case 1:
+        message = 'LLENO';
+        break;
+      case 2:
+        message = 'CANCELADO';
+        break;
+      case 3:
+        message = 'PASADO';
+        break;
+    }
+    return message;
+  }
+
   handleManageReservation(response) {
     if (response.ok) {
       this.setState({reservations: [], page: 0});
@@ -108,19 +127,20 @@ export default class ManageReservations extends Component {
           </View>
         ) : (
           this.state.reservations.map(reservation => {
+            console.log(reservation.dateTimeReservation);
             return (
               <Card key={reservation.id}>
                 <Card.Content>
                   <Text style={styles.tripInfo}>
-                    Hora de la reserva: {reservation.dateTimeReservations}
+                    Hora de la reserva: {LocalTimeUtils.beautifulyDateTime(reservation.dateTimeReservation)}
                   </Text>
                   <Text style={styles.tripInfo}>
                     Reservado por:{' '}
                     {reservation.user.name + ' ' + reservation.user.lastname}
                   </Text>
-                  <Text>Estado: {reservation.state}</Text>
+                  <Text style={styles.tripInfo}>Estado: {this.renderStatusText(reservation.status)}</Text>
                 </Card.Content>
-                {reservation.state === 0 ? (
+                {reservation.status === 0 ? (
                   <Card.Actions>
                     <Button
                       onPress={() => {
@@ -238,5 +258,10 @@ const styles = StyleSheet.create({
   },
   arrivalText: {
     color: '#69e000',
+  },
+  tripInfo: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#333333',
   },
 });
