@@ -2,17 +2,25 @@ import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import RegistrationForm from '../components/RegistrationForm';
 import Header from '../components/Header';
+import ErrorText from '../components/ErrorText';
 import {addUser} from '../client/UsersApi';
 
 export default class RegistrationScreen extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      isErrorVisible: false,
+    };
     this.registerUser = this.registerUser.bind(this);
   }
   handleAddUserResponse(response) {
-    console.log('Usuario registrado');
-    console.log(JSON.stringify(response));
-    this.props.navigation.navigate('LoginScreen');
+    if(response.ok){
+      console.log('Usuario registrado');
+      console.log(JSON.stringify(response));
+      this.props.navigation.navigate('LoginScreen');
+    } else {
+      this.setState({isErrorVisible: true});
+    }
   }
   registerUser(userRegistrationRequest) {
     addUser(userRegistrationRequest)
@@ -24,6 +32,11 @@ export default class RegistrationScreen extends React.Component {
     return (
       <View style={styles.registrationScreen} behavior="padding">
         <Header>Registro</Header>
+        {this.state.isErrorVisible ? (
+          <ErrorText>El usuario o el correo electrónico ya está en uso</ErrorText>
+        ) : (
+          undefined
+        )}
         <RegistrationForm handlePress={this.registerUser} />
         <View style={styles.row}>
           <Text style={styles.label}>¿Ya tienes una cuenta? </Text>
