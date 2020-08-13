@@ -11,6 +11,7 @@ import {Appbar, FAB, Card, Button} from 'react-native-paper';
 import {getUser, getCarsFromUser, deleteCar} from '../client/UsersApi';
 import LoadingIndicator from '../components/LoadingIndicator';
 import {ScrollView} from 'react-native-gesture-handler';
+import { DrawerActions } from '@react-navigation/native';
 var SecurityUtils = require('../utils/SecurityUtils');
 
 export default class MyCarsScreen extends Component {
@@ -83,6 +84,7 @@ export default class MyCarsScreen extends Component {
       return (
         <>
           <Appbar.Header dark={true}>
+          <Appbar.Action icon="menu" onPress={() => this.props.navigation.dispatch(DrawerActions.openDrawer())} />
             <Text style={styles.logo}>Unimoove</Text>
           </Appbar.Header>
           <ScrollView style={styles.background}>

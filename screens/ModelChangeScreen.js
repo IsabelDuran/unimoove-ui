@@ -13,7 +13,7 @@ export default class ModelChangeScreen extends React.Component {
   handleChangeCarModelResponse(response) {
     console.log('Modelo modificado');
     console.log(JSON.stringify(response));
-    this.props.navigation.goBack();
+    this.props.navigation.navigate('MyCarsScreen');
   }
 
   changeCarModel(carModelChangeRequest) {

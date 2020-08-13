@@ -11,6 +11,7 @@ import {Appbar, Button, Card} from 'react-native-paper';
 import {getUser, getReservationsFromUser} from '../client/UsersApi';
 import {modifyReservationState} from '../client/ReservationsApi';
 import LoadingIndicator from '../components/LoadingIndicator';
+import { DrawerActions } from '@react-navigation/native';
 import {ScrollView} from 'react-native-gesture-handler';
 var SecurityUtils = require('../utils/SecurityUtils');
 
@@ -101,6 +102,7 @@ export default class MyReservationsScreen extends Component {
       return (
         <>
           <Appbar.Header dark={true}>
+          <Appbar.Action icon="menu" onPress={() => this.props.navigation.dispatch(DrawerActions.openDrawer())} />
             <Text style={styles.logo}>Unimoove</Text>
           </Appbar.Header>
           <ScrollView style={styles.background}>

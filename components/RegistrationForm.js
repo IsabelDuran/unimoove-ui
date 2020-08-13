@@ -81,12 +81,12 @@ export default class RegistrationForm extends React.Component {
     return (
       <View style={styles.container}>
         {[
-          {label: 'Nombre', fieldName: 'name'},
-          {label: 'Apellidos', fieldName: 'lastname'},
           {
             label: 'Nombre de usuario',
             fieldName: 'username',
           },
+          {label: 'Nombre', fieldName: 'name'},
+          {label: 'Apellidos', fieldName: 'lastname'},
           {
             label: 'Email',
             fieldName: 'email',

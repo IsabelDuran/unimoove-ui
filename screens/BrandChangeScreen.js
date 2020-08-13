@@ -13,7 +13,7 @@ export default class BrandChangeScreen extends React.Component {
   handleChangeCarBrandResponse(response) {
     console.log('Marca modificada');
     console.log(JSON.stringify(response));
-    this.props.navigation.goBack();
+    this.props.navigation.navigate('BrandChangeScreen');
   }
 
   changeCarBrand(carBrandChangeRequest) {

@@ -15,7 +15,7 @@ export default class ChangeForm extends React.Component {
       <>
         <TextInput label="Actual" value={this.props.value} disabled={true} />
         <TextInput
-          label="Nuevo"
+          label="Introduzca aqui el nuevo valor"
           value={this.state.newValue}
           onChangeText={value => this.setState({newValue: value})}
         />

@@ -4,6 +4,7 @@ import {getUser} from '../client/UsersApi';
 import {Text, View, StyleSheet, Image} from 'react-native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import MyProfileScreen from '../screens/MyProfileScreen';
+import { DrawerActions } from '@react-navigation/native';
 import MyCarsScreen from '../screens/MyCarsScreen';
 import MyTripsScreen from '../screens/MyTripsScreen';
 import MyReservationsScreen from '../screens/MyReservationsScreen';
@@ -54,7 +55,8 @@ export default class MainScreen extends React.Component {
   startData() {
     return (
       <View style={styles.background}>
-        <Appbar.Header dark={true}>
+        <Appbar.Header dark={true}> 
+        <Appbar.Action icon="menu" onPress={() => this.props.navigation.dispatch(DrawerActions.openDrawer())} />
           <Text style={styles.logo}>Unimoove</Text>
         </Appbar.Header>
         <View style={styles.container}>

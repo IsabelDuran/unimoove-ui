@@ -10,6 +10,7 @@ import {
 import {Appbar, FAB, Card, Button} from 'react-native-paper';
 import {getUser, getPaginatedTripsFromUser} from '../client/UsersApi';
 import {modifyTripState} from '../client/TripsApi';
+import { DrawerActions } from '@react-navigation/native';
 import LoadingIndicator from '../components/LoadingIndicator';
 import {ScrollView} from 'react-native-gesture-handler';
 var SecurityUtils = require('../utils/SecurityUtils');
@@ -123,6 +124,7 @@ export default class MyTripsScreen extends Component {
       return (
         <>
           <Appbar.Header dark={true}>
+          <Appbar.Action icon="menu" onPress={() => this.props.navigation.dispatch(DrawerActions.openDrawer())} />
             <Text style={styles.logo}>Unimoove</Text>
           </Appbar.Header>
           <ScrollView style={styles.background}>
