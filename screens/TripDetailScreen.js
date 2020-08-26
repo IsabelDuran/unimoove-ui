@@ -120,6 +120,13 @@ export default class TripDetailScreen extends Component {
         </Text>
         <Divider />
         <Text style={styles.text}>
+          Teléfono:{'\n'}
+          <Text style={{color: this.renderStatusTextColor()}}>
+            {this.state.trip.phone}
+          </Text>
+        </Text>
+        <Divider />
+        <Text style={styles.text}>
           Número de sitios disponibles:{'\n'}
           <Text style={{color: this.renderStatusTextColor()}}>
             {this.state.trip.numberAvailableSeats}

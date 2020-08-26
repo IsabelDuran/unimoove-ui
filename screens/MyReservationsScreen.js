@@ -14,6 +14,7 @@ import LoadingIndicator from '../components/LoadingIndicator';
 import { DrawerActions } from '@react-navigation/native';
 import {ScrollView} from 'react-native-gesture-handler';
 var SecurityUtils = require('../utils/SecurityUtils');
+var LocalTimeUtils = require('../utils/LocalTimeUtils');
 
 export default class MyReservationsScreen extends Component {
   constructor(props) {
@@ -142,6 +143,9 @@ export default class MyReservationsScreen extends Component {
                       <Text style={styles.tripInfo}>
                         A: {reservation.trip.arrivalPlace}
                       </Text>
+                      <Text style={styles.tripInfo}>
+                        Fecha: {LocalTimeUtils.beautifulyDateTime(reservation.trip.departureDateTime)}
+                      </Text>
                     </Card.Content>
                     <Card.Actions>
                       <Button
@@ -245,6 +249,6 @@ const styles = StyleSheet.create({
   tripInfo: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#69e000',
+    color: '#525252',
   },
 });

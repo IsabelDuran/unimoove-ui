@@ -18,6 +18,14 @@ const validation = {
     },
     presence: true,
   },
+  phone: {
+    format: {
+      pattern: '[0-9]+',
+      flags: 'i',
+      message: 'El teléfono no puede tener letras',
+    },
+    presence: true,
+  },
   numberAvailableSeats: {
     format: {
       pattern: '[0-9]+',
@@ -37,6 +45,7 @@ export default class CreateTripScreen extends Component {
       departureDateTime: '',
       numberAvailableSeats: '',
       price: '',
+      phone: '',
       disabledNext: true,
       departureDate: '',
       departureTime: '',
@@ -110,6 +119,7 @@ export default class CreateTripScreen extends Component {
                 departureDateTime: dateTime,
                 departurePlace: this.state.departurePlace,
                 numberAvailableSeats: this.state.numberAvailableSeats,
+                phone: this.state.phone,
                 price: this.state.price,
               };
             } else {
@@ -119,6 +129,7 @@ export default class CreateTripScreen extends Component {
                 departurePlace: this.state.departurePlace,
                 numberAvailableSeats: this.state.numberAvailableSeats,
                 idCar: this.state.car.id,
+                phone: this.state.phone,
                 price: this.state.price,
               };
             }
@@ -141,6 +152,7 @@ export default class CreateTripScreen extends Component {
       'departureTime',
       'numberAvailableSeats',
       'price',
+      'phone',
       'car',
       'infoPage',
     ];
@@ -260,6 +272,31 @@ export default class CreateTripScreen extends Component {
         <View style={styles.container}>
           <View>
             <Text style={styles.text}>
+              Número de teléfono de contacto
+            </Text>
+            <TextInput
+              value={this.state.phone}
+              mode="outlined"
+              label="Número de teléfono"
+              error={
+                this.state.phone.length > 0 &&
+                validate.single(this.state.phone, validation.phone)
+              }
+              onChangeText={value =>
+                this.setState({
+                  phone: value,
+                  disabledNext:
+                    value.length <= 0 ||
+                    validate.single(value, validation.phone),
+                })
+              }
+            />
+            {this.renderHelperText('phone')}
+          </View>
+        </View>
+        <View style={styles.container}>
+          <View>
+            <Text style={styles.text}>
               ¿Quieres añadir uno de tus coches al viaje?
             </Text>
             <CarList handlePress={this.setCar} />
@@ -289,6 +326,9 @@ export default class CreateTripScreen extends Component {
           <Divider />
           <Text style={styles.title}>Precio</Text>
           <Text style={styles.infoText}>{this.state.price + '€'}</Text>
+          <Divider />
+          <Text style={styles.title}>Número de teléfono</Text>
+          <Text style={styles.infoText}>{this.state.phone}</Text>
           {this.state.car !== undefined ? (
             <>
               <Divider />

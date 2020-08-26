@@ -138,7 +138,6 @@ export default class ManageReservations extends Component {
                     Reservado por:{' '}
                     {reservation.user.name + ' ' + reservation.user.lastname}
                   </Text>
-                  <Text style={styles.tripInfo}>Estado: {this.renderStatusText(reservation.status)}</Text>
                 </Card.Content>
                 {reservation.status === 0 ? (
                   <Card.Actions>

@@ -142,6 +142,24 @@ export default class ReservationDetailScreen extends Component {
           </Text>
         </Text>
         <Divider />
+        {this.state.reservation.status == 1 ? (<><Divider />
+        <Text style={styles.text}>
+          Teléfono:{'\n'}
+          <Text style={{color: this.renderStatusTextColor()}}>
+            {this.state.reservation.trip.phone}
+          </Text>
+        </Text>
+        <Divider /></>
+        ) : undefined}
+        {this.state.reservation.status == 1 ? (<><Divider />
+        <Text style={styles.text}>
+          Coche:{'\n'}
+          <Text style={{color: this.renderStatusTextColor()}}>
+            {this.state.reservation.trip.car.brand + ' ' + this.state.reservation.trip.car.model}
+          </Text>
+        </Text>
+        <Divider /></>
+        ) : undefined}
         {this.state.reservation.status < 2 ? (
           <Button
             style={styles.button}

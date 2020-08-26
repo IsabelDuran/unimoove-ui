@@ -12,6 +12,7 @@ import {Card, Button} from 'react-native-paper';
 import {addReservation} from '../client/ReservationsApi';
 import {getUser, getPaginatedTripsFromUser} from '../client/UsersApi';
 var SecurityUtils = require('../utils/SecurityUtils');
+var LocalTimeUtils = require('../utils/LocalTimeUtils');
 
 export default class SearchedTripsScreen extends Component {
   constructor(props) {
@@ -115,10 +116,7 @@ export default class SearchedTripsScreen extends Component {
                     </Text>
                     <Text style={styles.tripInfo}>A: {trip.arrivalPlace}</Text>
                     <Text style={styles.tripInfo}>
-                      Hora:{' '}
-                      {new Date(
-                        Date.parse(trip.departureDateTime),
-                      ).toLocaleString()}
+                      Hora: {LocalTimeUtils.beautifulyDateTime(trip.departureDateTime)}
                     </Text>
                   </Card.Content>
                   <Card.Actions>
@@ -173,6 +171,11 @@ const styles = StyleSheet.create({
   image: {
     width: 140,
     height: 140,
+  },
+  tripInfo: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#333333',
   },
   text: {
     fontFamily: 'OpenSans-Regular',
